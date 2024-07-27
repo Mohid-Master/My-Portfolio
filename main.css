@@ -1,8 +1,10 @@
 *{
-    margin: 0;padding: 0;
+    margin: 0;
+    padding: 0;
 }
 body{
     width: 100vw;height: 100vh;
+    background: #ffffff;
 }
 .nav {
     background: rgb(244,255,221);
@@ -15,6 +17,45 @@ body{
 .nav .signUp {} */
 
 .meContainer{
-    clip-path: circle(63.1% at 66% 36%);
-    background: #e6b4b4;
+    /* clip-path: circle(63.1% at 66% 36%); */
+    /* border-radius: 10% 0% 0% 79% / 0% 0% 16% 82% ; */
+    border-radius: 50%;
+    border: 2px solid rgb(60, 0, 255);
+    background: #7683f3;
+    position: absolute;
+    height: 400px;
+    width: 400px;
+    transform: translate(200%,20%);
 }
+.meContainer .chatBox{
+    clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%);
+    height: 50px;
+    width: 100px;
+    background: #55cbf6;
+    text-align: center;
+    border-radius: 0px;
+    transform: translate(10px, 10px);
+    
+}
+
+/* HTML: <div class="tooltip">This is a Tooltip with a gradient or solid coloration and with border radius </div> */
+.tooltip {
+    color: #fff;
+    font-size: 18px;
+    max-width: 28ch;
+    text-align: center;
+  }
+  .tooltip {
+    --s: 1.5em; /* triangle size */
+    --r: 1em; /* the radius */
+  
+    padding: 1em;
+    border: var(--s) solid #ab0c0c00;
+    border-radius: calc(var(--r) + var(--s));
+    border-bottom-right-radius: 0;
+    background: border-box linear-gradient(65deg,#1dc76f,#4ECDC4); /* the coloration */
+    -webkit-mask: 
+      radial-gradient(100% 100% at 0 100%,#0000 99%,#000 100%) 
+        calc(100% - var(--s)) 100%/var(--s) var(--s) no-repeat border-box,
+      linear-gradient(#000 0 0) padding-box;
+  }

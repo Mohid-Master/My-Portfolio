@@ -3,88 +3,966 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#hobbies">Hobbies/Services</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-    <section id="home" class="blob">
-        <h1>Welcome to My Portfolio</h1>
-        <p>Explore my work and hobbies!</p>
-    </section>
-    <section id="hobbies" class="blob">
-        <h2>Hobbies & Services</h2>
-        <p>Here are some of the tools and services I offer.</p>
-    </section>
-    <section id="contact" class="blob">
-        <h2>Contact Me</h2>
-        <form>
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Your Email" required>
-            <textarea placeholder="Your Message" required></textarea>
-            <button type="submit">Send</button>
-        </form>
-    </section>
-    <script src="script.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav>
-        <div class="logo">
-            <img src="me.jpg" alt="Logo" />
-        </div>
-        <div class="nav-links">
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="hobbies.html">Hobbies/Services</a></li>
-                <li><a href="contactMe.html">Contact</a></li>
-            </ul>
-        </div>
-        <div class="menu-icon" id="menu-icon">
-            &#9776; <!-- Hamburger icon -->
-        </div>
-    </nav>
+    <title>Mohid's Awesome Portfolio</title>
     
-    <div class="sidebar" id="sidebar">
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="./hobbies.html">Hobbies/Services</a></li>
-            <li><a href="./contactMe.html">Contact</a></li>
-        </ul>
+    <!-- Google Fonts: Poppins & Roboto Slab -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <style>
+        /* === GLOBAL STYLES & VARIABLES === */
+        :root {
+            --primary-color: #007bff; /* Main brand color - vibrant blue */
+            --secondary-color: #6c757d; /* Muted gray for secondary text */
+            --accent-color: #ffc107;  /* Bright yellow for accents, CTAs */
+            --light-bg: #f8f9fa; /* Very light gray for alternate sections */
+            --dark-bg: #2c3e50; /* Dark blue/gray for footer and contrasts */
+            --text-color: #343a40; /* Main text color */
+            --light-text: #ecf0f1; /* Text on dark backgrounds */
+            --nav-height: 70px;
+            --font-primary: 'Poppins', sans-serif;
+            --font-headings: 'Roboto Slab', serif; /* A nice slab serif for headings */
+            --box-shadow-light: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --box-shadow-strong: 0 8px 25px rgba(0, 0, 0, 0.12);
+            --border-radius: 10px;
+            --transition-speed: 0.3s;
+            --modal-cross-color: #e74c3c; /* A softer red for the close button */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.7; /* Slightly more spacious line height */
+            color: var(--text-color);
+            background-color: #ffffff;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .container { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+
+        h1, h2, h3, h4 { font-family: var(--font-headings); font-weight: 700; line-height: 1.3; margin-bottom: 1rem; }
+        h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); color: var(--dark-bg); }
+        h2 { font-size: clamp(2rem, 4vw, 2.8rem); color: var(--primary-color); text-align: center; margin-bottom: 3rem; position: relative; }
+        h2::after { /* Underline accent for H2 */
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin: 0.5rem auto 0;
+            border-radius: 2px;
+        }
+        h3 { font-size: clamp(1.3rem, 2.5vw, 1.75rem); color: var(--primary-color); }
+        p { margin-bottom: 1.25rem; font-size: 1.05rem; }
+        a { text-decoration: none; color: var(--primary-color); transition: color var(--transition-speed) ease; }
+        a:hover { color: #0056b3; } /* Darken primary on hover */
+        img { max-width: 100%; height: auto; display: block; border-radius: var(--border-radius); }
+        ul { list-style: none; }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--dark-bg);
+            padding: 12px 30px;
+            border-radius: 50px; /* Pill shape */
+            font-family: var(--font-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+            box-shadow: var(--box-shadow-light);
+            border: none;
+            cursor: pointer;
+        }
+        .cta-button:hover {
+            background-color: #ffab00; /* Darken accent */
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: var(--box-shadow-strong);
+            color: var(--dark-bg);
+        }
+        .cta-button.secondary { /* For alternative CTA style */
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        .cta-button.secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .section-intro { text-align: center; max-width: 750px; margin: 0 auto 3rem auto; font-size: 1.15rem; color: var(--secondary-color); }
+
+        /* === SECTION BREAKERS === */
+        .section-breaker {
+            height: 60px; /* Reduced height for a more subtle breaker */
+            position: relative;
+            overflow: hidden;
+            margin: 20px 0; /* Add some margin around breakers */
+        }
+        .section-breaker::before { /* Angled shape */
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--light-bg);
+            transform: skewY(-1.5deg); /* Softer angle */
+            transform-origin: top left;
+        }
+        .section-breaker.alt-bg::before {
+            background-color: #fff;
+        }
+
+
+        /* === HEADER & NAVIGATION === */
+        .site-header { background-color: rgba(255, 255, 255, 0.95); box-shadow: var(--box-shadow-light); position: sticky; top: 0; z-index: 1000; width: 100%; height: var(--nav-height); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .navbar { display: flex; justify-content: space-between; align-items: center; height: var(--nav-height); padding: 0 20px; max-width: 1200px; margin: 0 auto; }
+        .nav-logo a { font-family: var(--font-headings); font-size: 1.8rem; font-weight: 700; color: var(--primary-color); }
+        .nav-links { display: flex; }
+        .nav-links li { margin-left: 30px; }
+        .nav-links a { color: var(--text-color); font-weight: 500; padding: 8px 0; position: relative; letter-spacing: 0.5px; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 3px; background-color: var(--accent-color); border-radius: 2px; transition: width var(--transition-speed) ease; }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .menu-icon { display: none; font-size: 1.6rem; color: var(--primary-color); cursor: pointer; background: none; border: none; padding: 5px; }
+        .menu-icon i { font-size: 1.5rem; transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
+
+        /* === HERO SECTION === */
+        .hero-section { min-height: calc(100vh - var(--nav-height)); display: flex; align-items: center; justify-content: center; padding: 4rem 20px; background: linear-gradient(135deg, #e0f2fe 0%, #cce7ff 100%); position: relative; overflow: hidden; }
+        .hero-content { display: flex; align-items: center; justify-content: space-between; gap: 3rem; max-width: 1140px; width: 100%; }
+        .hero-text { flex: 1; max-width: 600px; animation: slideInFromLeft 0.8s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; opacity: 0; }
+        .hero-text h1 { margin-bottom: 0.75rem; }
+        .hero-text .tagline { font-size: clamp(1.2rem, 2.5vw, 1.6rem); color: var(--secondary-color); font-weight: 400; margin-bottom: 1.75rem; }
+        .hero-text .tagline .highlight { color: var(--primary-color); font-weight: 700; }
+        .hero-text p:not(.tagline) { font-size: 1.15rem; margin-bottom: 2.5rem; color: #555; }
+        .hero-image-container { flex-shrink: 0; position: relative; animation: fadeInScaleUp 1s 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; transform: scale(0.9); }
+        .hero-image { width: 320px; height: 320px; object-fit: cover; object-position: top; border-radius: 50%; border: 8px solid #fff; box-shadow: 0 15px 35px rgba(0, 123, 255, 0.2), 0 0 0 15px rgba(255, 255, 255, 0.3); }
+        @keyframes slideInFromLeft { 0% { transform: translateX(-100px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeInScaleUp { 0% { opacity: 0; transform: scale(0.8) rotate(-5deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
+
+        /* === CONTENT SECTIONS (General) === */
+        .content-section {
+            padding: 80px 0;
+            opacity: 0;
+            transform: translateY(50px); /* Start slightly lower for reveal */
+            transition: opacity 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            will-change: opacity, transform;
+        }
+        .content-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === ABOUT SECTION === */
+        .about-section { background-color: var(--light-bg); }
+        .about-content { display: flex; gap: 3rem; align-items: flex-start; }
+        .about-image { flex: 0 0 320px; } /* Initial animation removed to rely on section reveal */
+        .about-image img { box-shadow: var(--box-shadow-strong); }
+        .about-text { flex: 1; }
+        .skills-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.5rem; }
+        .skills-list li { background-image: linear-gradient(to right, var(--primary-color), #0056b3); color: var(--light-text); padding: 8px 18px; border-radius: 20px; font-size: 0.95rem; font-weight: 500; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .skills-list li:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+
+        /* === VANILLA JS CAROUSEL STYLES === */
+        .carousel-section { padding: 80px 0; } /* Wrapper for carousel and its title/controls */
+        .carousel-container { position: relative; width: 100%; overflow: hidden; margin: 0 auto; }
+        .carousel-wrapper { display: flex; will-change: transform; /* JS will handle transition */ }
+        .carousel-slide { box-sizing: border-box; padding: 0 15px; display: flex; justify-content: center; align-items: stretch; flex-shrink: 0; opacity: 0.5; transform: scale(0.9); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .carousel-slide.is-active-slide { opacity: 1; transform: scale(1); }
+        .carousel-controls { text-align: center; margin-top: 2rem; }
+        .carousel-button { background-color: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); border-radius: 50%; cursor: pointer; margin: 0 10px; width: 48px; height: 48px; transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease; display: inline-flex; align-items: center; justify-content: center; box-shadow: var(--box-shadow-light); }
+        .carousel-button i { font-size: 1.3rem; color: var(--primary-color); transition: color var(--transition-speed) ease; }
+        .carousel-button:hover { background-color: var(--primary-color); transform: scale(1.1); box-shadow: var(--box-shadow-strong); }
+        .carousel-button:hover i { color: white; }
+        .carousel-button:disabled { border-color: #ccc; cursor: not-allowed; opacity: 0.5; background-color: transparent !important; box-shadow: none; }
+        .carousel-button:disabled i { color: #ccc !important; }
+
+        /* Project Card */
+        .project-card { background-color: #fff; border-radius: var(--border-radius); box-shadow: var(--box-shadow-strong); overflow: hidden; transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease; display: flex; flex-direction: column; width: 100%; max-width: 370px; min-height: 440px; margin: 0 auto; }
+        .project-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15); }
+        .project-card img { width: 100%; height: 220px; object-fit: cover; border-bottom: 3px solid var(--accent-color); }
+        .project-info { padding: 1.75rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .project-info h3 { margin-bottom: 0.75rem; }
+        .project-info p { font-size: 0.95rem; color: var(--secondary-color); flex-grow: 1; margin-bottom: 1.25rem; }
+        .project-tags { margin-bottom: 1.25rem; display: flex; flex-wrap: wrap; gap: 8px; }
+        .project-tags span { background-color: var(--light-bg); color: var(--secondary-color); font-size: 0.8rem; padding: 5px 12px; border-radius: 15px; border: 1px solid #e0e0e0; }
+        .project-link { align-self: flex-start; font-weight: 500; color: var(--primary-color); font-size: 0.95rem; padding: 10px 18px; border: 2px solid var(--primary-color); border-radius: 50px; transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease; display: inline-flex; align-items: center; }
+        .project-link i { margin-left: 8px; }
+        .project-link:hover { background-color: var(--primary-color); color: white; }
+
+        /* YouTube Video Card */
+        .youtube-video { background-color: #fff; padding: 1.25rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow-strong); text-align: center; width: 100%; max-width: 540px; margin: 0 auto; transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease; }
+        .youtube-video:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
+        .youtube-video iframe { width: 100%; aspect-ratio: 16 / 9; height: auto; border-radius: calc(var(--border-radius) - 5px); margin-bottom: 1rem; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .youtube-video p { font-size: 1rem; color: var(--text-color); font-weight: 500; }
+
+        /* === GAMES SECTION & MODAL === */
+        .games-section-creative { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: var(--light-text); }
+        .games-section-creative h2 { color: var(--accent-color); }
+        .games-section-creative h2::after { background-color: #fff; }
+        .games-section-creative .section-intro { color: rgba(236, 240, 241, 0.85); }
+        .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; }
+        .game-card { background-color: rgba(52, 73, 94, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(236, 240, 241, 0.2); border-radius: var(--border-radius); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); overflow: visible; transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.35s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; }
+        .game-card:hover { transform: translateY(-12px) scale(1.03); box-shadow: 0 18px 40px rgba(var(--accent-color), 0.2); }
+        .game-card-image-container { position: relative; overflow: hidden; border-top-left-radius: var(--border-radius); border-top-right-radius: var(--border-radius); }
+        .game-card-image-container img { width: 100%; height: 220px; object-fit: cover; transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .game-card:hover .game-card-image-container img { transform: scale(1.12); }
+        .game-card-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 70%); display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px; opacity: 0; transition: opacity 0.4s ease-in-out; }
+        .game-card:hover .game-card-overlay { opacity: 1; }
+        .play-game-button { background-color: var(--accent-color); color: var(--dark-bg); padding: 12px 25px; border: none; border-radius: 50px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease; font-size: 0.95rem; box-shadow: 0 3px 12px rgba(var(--accent-color), 0.4); text-decoration: none; display: inline-flex; align-items: center; }
+        .play-game-button i { margin-right: 8px; font-size: 1.1em; }
+        .play-game-button:hover { background-color: #ffab00; transform: scale(1.05) translateY(-2px); box-shadow: 0 5px 18px rgba(var(--accent-color), 0.5); }
+        .game-card-info { padding: 1.75rem; flex-grow: 1; display: flex; flex-direction: column; border-bottom-left-radius: var(--border-radius); border-bottom-right-radius: var(--border-radius); }
+        .game-card-info h3 { color: var(--light-text); }
+        .game-card-info p { font-size: 0.95rem; color: rgba(236, 240, 241, 0.8); margin-bottom: 1.25rem; flex-grow: 1; }
+        .games-section-creative .project-tags span { background-color: rgba(var(--accent-color), 0.15); color: var(--accent-color); border: 1px solid rgba(var(--accent-color), 0.3); font-size: 0.8rem; padding: 5px 12px; }
+
+        /* Game Modal Styles */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.92); justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease-in-out; padding: 20px; }
+        .modal.active { display: flex; opacity: 1; }
+        .modal-content { background-color: #2c3e50; margin: auto; padding: 12px; border: 1px solid rgba(var(--accent-color), 0.3); width: 100%; max-width: 1000px; height: calc(100% - 40px); max-height: 90vh; border-radius: var(--border-radius); position: relative; box-shadow: 0 8px 40px rgba(0,0,0,0.6); display: flex; flex-direction: column; transform: scale(0.9) translateY(20px); transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.05s, opacity 0.3s ease-in-out; }
+        .modal.active .modal-content { transform: scale(1) translateY(0); }
+        .close-modal-button { position: absolute; top: -14px; right: -14px; width: 32px; height: 32px; background-color: var(--modal-cross-color); border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease, background-color 0.2s ease; z-index: 10; }
+        .close-modal-button i { color: white; font-size: 1.1rem; }
+        .close-modal-button:hover { transform: scale(1.15) rotate(90deg); background-color: #c0392b; }
+        #game-iframe { width: 100%; height: 100%; flex-grow: 1; border: none; background-color: #1c2833; border-radius: calc(var(--border-radius) - 6px); }
+        #modal-message { color: var(--light-text); text-align: center; padding: 20px; font-size: 1.1rem; }
+
+        /* === HOBBIES & INTERESTS SECTION === */
+        .hobbies-section {
+            padding: 80px 0;
+            position: relative;
+            color: var(--light-text);
+            overflow: hidden;
+        }
+        .hobbies-section::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1; background: linear-gradient(120deg, #2980b9, #8e44ad, #27ae60, #f39c12);
+            background-size: 300% 300%; /* Reduced size for slower, broader movement */
+            animation: fluidGradient 25s ease infinite alternate; /* Added alternate for smoother reverse */
+        }
+        @keyframes fluidGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .hobbies-section h2 { color: var(--light-text); }
+        .hobbies-section h2::after { background-color: var(--accent-color); }
+        .hobbies-section .section-intro { color: rgba(236, 240, 241, 0.9); }
+        .hobbies-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.5rem; margin-top: 2rem; }
+        .hobby-card {
+            background-color: rgba(255, 255, 255, 0.12); /* Slightly more opaque */
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            padding: 2.25rem; border-radius: var(--border-radius); text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, background-color var(--transition-speed) ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .hobby-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            background-color: rgba(255, 255, 255, 0.18);
+        }
+        .hobby-card i { font-size: 3.5rem; color: var(--accent-color); margin-bottom: 1.25rem; display: block; text-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .hobby-card h3 { color: var(--light-text); font-family: var(--font-primary); font-size: 1.5rem; margin-bottom: 0.75rem; }
+        .hobby-card p { font-size: 0.95rem; color: rgba(236, 240, 241, 0.85); }
+
+        /* Contact Section */
+        .contact-section { background-color: var(--light-bg); }
+        .contact-form { max-width: 700px; margin: 0 auto; background-color: #fff; padding: 2.5rem; border-radius: var(--border-radius); box-shadow: var(--box-shadow-strong); }
+        .form-group { margin-bottom: 1.75rem; }
+        .contact-form input[type="text"], .contact-form input[type="email"], .contact-form textarea { width: 100%; padding: 14px; border: 1px solid #ced4da; border-radius: var(--border-radius); font-family: var(--font-primary); font-size: 1rem; transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease; }
+        .contact-form input[type="text"]:focus, .contact-form input[type="email"]:focus, .contact-form textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,123,255,0.15); }
+        .contact-form textarea { resize: vertical; min-height: 120px; }
+        .contact-form button[type="submit"] { width: auto; display: block; margin: 1rem auto 0; padding: 14px 35px; }
+
+        /* === FOOTER === */
+        .site-footer-bottom { background-color: var(--dark-bg); color: var(--light-text); text-align: center; padding: 3rem 0; font-size: 0.95rem; }
+        .site-footer-bottom p { margin-bottom: 0.75rem; }
+        .social-links { margin-bottom: 1.5rem; }
+        .social-links a { color: var(--light-text); font-size: 1rem; margin: 0 12px; padding: 8px 10px; border-radius: 50%; transition: color var(--transition-speed) ease, transform var(--transition-speed) ease, background-color var(--transition-speed) ease; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid rgba(236, 240, 241, 0.3); }
+        .social-links a i { font-size: 1.3em; }
+        .social-links a span { display: none; }
+        .social-links a:hover { color: var(--dark-bg); background-color: var(--accent-color); border-color: var(--accent-color); transform: translateY(-3px) scale(1.1); }
+        .heart-icon { color: var(--modal-cross-color); display: inline-block; animation: pulseHeart 1.5s infinite; font-size: 1em; }
+        @keyframes pulseHeart { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+        /* === BACK TO TOP BUTTON === */
+        #back-to-top { position: fixed; bottom: 25px; right: 25px; background-color: var(--primary-color); color: white; border: none; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; box-shadow: var(--box-shadow-strong); opacity: 0; visibility: hidden; transition: opacity var(--transition-speed) ease, visibility var(--transition-speed) ease, transform var(--transition-speed) ease, background-color var(--transition-speed) ease; z-index: 999; display: flex; align-items: center; justify-content: center; }
+        #back-to-top i { font-size: 1.4rem; }
+        #back-to-top.visible { opacity: 1; visibility: visible; }
+        #back-to-top:hover { background-color: #0056b3; transform: scale(1.1) translateY(-2px); }
+
+        /* === RESPONSIVE DESIGN === */
+        @media (max-width: 992px) {
+            .hero-content { flex-direction: column; text-align: center; gap: 2rem; }
+            .hero-text { max-width: 100%; margin-bottom: 1rem; }
+            .hero-image-container { margin: 1rem auto 0; }
+            .hero-image { width: 280px; height: 280px; }
+            .about-content { flex-direction: column; text-align: center; }
+            .about-image { margin: 0 auto 2rem auto; flex-basis: auto; }
+            .carousel-container { padding: 0; }
+        }
+        @media (max-width: 768px) {
+            html { font-size: 15px; }
+            .nav-links { position: fixed; top: var(--nav-height); left: -100%; width: 80%; max-width: 320px; height: calc(100vh - var(--nav-height)); background-color: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); flex-direction: column; align-items: stretch; text-align: left; padding: 2rem 0; box-shadow: 5px 0 15px rgba(0,0,0,0.1); transition: left 0.35s cubic-bezier(0.23, 1, 0.32, 1); z-index: 999; }
+            .nav-links.active { left: 0; }
+            .nav-links li { margin: 0; width: 100%; }
+            .nav-links a { font-size: 1.25rem; display: block; padding: 1rem 2rem; width: 100%; border-bottom: 1px solid #eee;}
+            .nav-links a::after { display: none; }
+            .nav-links li:last-child a { border-bottom: none; }
+            .menu-icon { display: block; }
+            .hero-section { padding: 3rem 20px; }
+            .content-section { padding: 60px 0; }
+            .games-grid { grid-template-columns: 1fr; }
+            .carousel-button { width: 44px; height: 44px; }
+            .project-card, .youtube-video { min-height: auto; max-width: 90%; }
+            .modal-content { padding: 8px; height: calc(100% - 30px); max-height: 95vh; }
+            .close-modal-button { top: -10px; right: -10px; width: 28px; height: 28px; }
+            .close-modal-button i {font-size: 0.9rem;}
+            .hobbies-grid { grid-template-columns: 1fr; }
+            .contact-form { padding: 2rem; }
+        }
+        @media (max-width: 480px) {
+            html { font-size: 14px; }
+            #back-to-top { width: 45px; height: 45px; bottom: 15px; right: 15px; }
+            .cta-button { padding: 10px 22px; font-size: 0.9rem;}
+            .contact-form button[type="submit"] { width: 100%; }
+            .carousel-controls { margin-top: 1.5rem; }
+            .social-links a { margin: 0 6px; width: 40px; height: 40px; }
+            .social-links a i { font-size: 1.1em; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="nav-logo">
+                <a href="#home">Mohid.Dev</a>
+            </div>
+            <ul class="nav-links" id="nav-links-list">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#games">Games</a></li>
+                <li><a href="#hobbies">Hobbies</a></li>
+                <li><a href="#youtube">Videos</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="menu-icon" id="menu-icon" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links-list">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero-section">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Hey, I'm Mohid</h1>
+                    <p class="tagline">A <span class="highlight">Passionate Developer</span> & <span class="highlight">Creative Problem-Solver</span></p>
+                    <p>I craft engaging and user-friendly web experiences, transforming ideas into digital realities. Welcome to my creative space!</p>
+                    <a href="#projects" class="cta-button">View My Work</a>
+                </div>
+                <div class="hero-image-container">
+                    <img src="pic.png" alt="Mohid - Professional Developer" class="hero-image" loading="eager">
+                </div>
+            </div>
+        </section>
+
+        <div class="section-breaker"></div>
+
+        <section id="about" class="content-section about-section">
+             <div class="container">
+                <h2>About Me</h2>
+                <div class="about-content">
+                    <div class="about-image">
+                         <img src="pic.png" alt="Mohid - About Me Image" loading="lazy">
+                    </div>
+                    <div class="about-text">
+                        <p>Hello there! I'm Mohid, a dedicated web developer with a strong enthusiasm for building intuitive, dynamic, and visually appealing digital solutions. My journey into the world of programming began with a fascination for how websites work, which quickly evolved into a deep-seated passion for coding and design.</p>
+                        <p>I specialize in front-end technologies like HTML, CSS, and JavaScript, and I'm continually expanding my skillset with frameworks like React and Vue.js. I thrive on tackling challenging problems, learning new technologies, and collaborating on exciting projects. My goal is to not just write code, but to create meaningful and impactful user experiences.</p>
+                        <p>When I'm not immersed in code, you might find me exploring new creative hobbies, gaming, or staying updated with the latest tech trends.</p>
+                        <h3>My Core Skills:</h3>
+                        <ul class="skills-list">
+                            <li>HTML5 & Semantics</li>
+                            <li>CSS3 & Responsive Design</li>
+                            <li>JavaScript (ES6+)</li>
+                            <li>React.js (Learning)</li>
+                            <li>github (commit shark achievement)</li>
+                            <li>ai content generation</li>
+                            <li>Problem Solving</li>
+                            <li>UI/UX Principles</li>
+                            <li>social media</li>
+                            <li>cgi ads(inshallah in future)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-breaker alt-bg"></div>
+
+        <section id="projects" class="content-section carousel-section">
+            <div class="container">
+                <h2>My Projects</h2>
+                <p class="section-intro">Here's a selection of projects I've developed, showcasing my skills and dedication. Explore them all!</p>
+                <div class="carousel-container project-carousel" id="project-carousel" data-slides-per-view-desktop="3" data-slides-per-view-tablet="2" data-slides-per-view-mobile="1">
+                    <div class="carousel-wrapper">
+                        <div class="carousel-slide">
+                            <div class="project-card">
+                                <img src="pluton.png" alt="Plutons Theme Clone" loading="lazy">
+                                <div class="project-info">
+                                    <h3>Plutons Theme Clone</h3>
+                                    <p>A meticulous recreation of the popular 'Pluton' one-page agency theme, focusing on pixel-perfect design, smooth parallax scrolling, and responsive adaptability. Built with HTML, CSS, and JavaScript.</p>
+                                    <div class="project-tags"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
+                                    <a href="https://plutons.netlify.app" class="project-link" target="_blank" rel="noopener noreferrer">View Project <i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                             <div class="project-card" style="max-width: 350px;">
+                                <img src="cctv.png" alt="CCTV News Website Clone" loading="lazy">
+                                <div class="project-info">
+                                    <h3>CCTV News Clone</h3>
+                                    <p>A dynamic clone inspired by a major news broadcaster's website, emphasizing content layout, navigation, and information hierarchy. This project showcases skills in structuring complex UIs.</p>
+                                    <div class="project-tags"><span>HTML</span><span>CSS</span><span>Layout</span></div>
+                                    <a href="http://cctv-clone-by-mohid.netlify.app" class="project-link" target="_blank" rel="noopener noreferrer">View Project <i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="project-card">
+                                <img src="independence.png" alt="Independence Day Project" loading="lazy">
+                                <div class="project-info">
+                                    <h3>Independence Day Celebration</h3>
+                                    <p>A vibrant and festive single-page application built to celebrate Independence Day, featuring thematic visuals, animations, and interactive elements. A fun project exploring creative front-end design.</p>
+                                    <div class="project-tags"><span>HTML</span><span>CSS</span><span>Animation</span></div>
+                                    <a href="http://independence-day-project-by-mohid.netlify.app" class="project-link" target="_blank" rel="noopener noreferrer">View Project <i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="project-card" style="max-width: 360px;">
+                                <img src="mds.png" alt="MDS QuicklyYours" loading="lazy"> <!-- Added your image -->
+                                <div class="project-info">
+                                    <h3>MDS QuicklyYours</h3>
+                                    <p>A dynamic e-commerce or service platform concept named "QuicklyYours," focusing on user-friendly browsing, product display, and a streamlined interaction flow. My call project.</p>
+                                    <div class="project-tags"><span>HTML</span><span>CSS</span><span>JS</span><span>Concept</span></div>
+                                    <a href="https://mds-quicklyyour.netlify.app/" class="project-link" target="_blank" rel="noopener noreferrer">Visit now<i class="fas fa-external-link-alt"></i></a><a href="https://github.com/Mohid-Master/MDS-QuicklyYours/tree/main" class="project-link" target="_blank" rel="noopener noreferrer">View Concept <i class="fas fa-lightbulb"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="carousel-slide">
+                            <div class="project-card">
+                                <img src="weather.png" alt="Weather Application" loading="lazy"> <!-- Added your image -->
+                                <div class="project-info">
+                                    <h3>🌤️ AuraWeather - Your All-in-One Weather & Info Hub</h3>
+                                    <p>AuraWeather is a beautifully designed, feature-rich weather dashboard that provides not just real-time weather information, but also a suite of helpful daily tools.</p>
+                                    <div class="project-tags"><span>JavaScript</span><span>API</span><span>Async</span></div>
+                                    <a href="https://mohid-master.github.io/AuraWeather-app/" class="project-link" target="_blank" rel="noopener noreferrer">View Demo<i class="fas fa-cloud-sun"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-button prev-button" aria-label="Previous project"><i class="fas fa-chevron-left"></i></button>
+                    <button class="carousel-button next-button" aria-label="Next project"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-breaker"></div>
+
+        <section id="games" class="content-section games-section-creative">
+             <div class="container">
+                <h2>My Mini-Games & Demos</h2>
+                <p class="section-intro">Some fun interactive projects I've built to experiment with JavaScript and game logic. Click to play!</p>
+                <div class="games-grid">
+                    <div class="game-card">
+                        <div class="game-card-image-container">
+                            <img src="pattern.png" alt="Pattern Puzzle AI Screenshot" loading="lazy">
+                            <div class="game-card-overlay">
+                                <button class="play-game-button" data-game-url="https://patternpuzzlegamebymohid.netlify.app/" data-game-type="iframe">
+                                    <i class="fas fa-puzzle-piece"></i> Play Puzzle
+                                </button>
+                            </div>
+                        </div>
+                        <div class="game-card-info">
+                            <h3>Pattern Puzzle AI</h3>
+                            <p>Test your pattern recognition! Draw the sequence based on clues before attempts run out. An AI-themed challenge.</p>
+                            <div class="project-tags"><span>JavaScript</span><span>HTML</span><span>Canvas</span></div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-card-image-container">
+                            <img src="serenity.png" alt="serenity key" loading="lazy"> <!-- Added your image -->
+                            <div class="game-card-overlay">
+                                <button class="play-game-button" data-game-url="https://serenity-keys.netlify.app/" data-game-type="iframe">
+                                     <i class="fas fa-rocket"></i>Launch Demo
+                                </button>
+                            </div>
+                        </div>
+                        <div class="game-card-info">
+                            <h3>music tile blast - serenity keys</h3>
+                            <p>An out of ordinary game upload any music you got and smash the tiles</p>
+                            <div class="project-tags"><span>JS</span><span>Canvas</span><span>Game Dev</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-breaker alt-bg"></div>
+        
+        <section id="hobbies" class="content-section hobbies-section">
+            <div class="container">
+                <h2>Hobbies & Interests</h2>
+                <p class="section-intro">Beyond coding, I enjoy a variety of activities that fuel my creativity and provide a well-rounded perspective.</p>
+                <div class="hobbies-grid">
+                    <div class="hobby-card">
+                        <i class="fas fa-gamepad"></i>
+                        <h3>Gaming</h3>
+                        <p>Exploring virtual worlds, strategic challenges, and immersive storytelling in video games.</p>
+                    </div>
+                    <div class="hobby-card">
+                        <i class="fas fa-book-open-reader"></i>
+                        <h3>Learning Tech</h3>
+                        <p>Constantly diving into new technologies, programming languages, and web development trends.</p>
+                    </div>
+                    <div class="hobby-card">
+                        <i class="fas fa-palette"></i>
+                        <h3>Creative Design</h3>
+                        <p>Experimenting with UI/UX principles, graphic design tools, and visual aesthetics.</p>
+                    </div>
+                     <div class="hobby-card">
+                        <i class="fas fa-camera-retro"></i>
+                        <h3>Photography</h3>
+                        <p>Capturing moments and perspectives, exploring composition and light in the world around me.</p>
+                    </div>                 
+                    <div class="hobby-card">
+                        <i class="fas fa-shop"></i>
+                        <h3>Ecomerce and dropshipper</h3>
+                        <p>i also resell product</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-breaker"></div>
+
+        <section id="youtube" class="content-section carousel-section">
+            <div class="container">
+                <h2>My YouTube Creations</h2>
+                <p class="section-intro">Check out some of my videos & channels where I share insights, tutorials, or creative content. Explore endlessly!</p>
+                <div class="carousel-container youtube-carousel" id="youtube-carousel" data-slides-per-view-desktop="2" data-slides-per-view-tablet="1" data-slides-per-view-mobile="1">
+                    <div class="carousel-wrapper">
+                        <div class="carousel-slide">
+                            <div class="youtube-video">
+                                <iframe src="https://youtube.com/embed/lY7JgXTrQlk?feature=share" title="YouTube video player 1" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <p>Man of life upright</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="youtube-video">
+                                 <iframe src="https://youtube.com/embed/L4JJXQaHU7w?feature=share" title="YouTube video player 4" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <p>seven ages of men</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-button prev-button" aria-label="Previous video"><i class="fas fa-chevron-left"></i></button>
+                    <button class="carousel-button next-button" aria-label="Next video"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+        
+        <div class="section-breaker alt-bg"></div>
+
+        <section id="contact" class="content-section contact-section">
+             <div class="container">
+                <h2>Get In Touch</h2>
+                <p class="section-intro">Have a project in mind, a question, or just want to connect? I'd love to hear from you!</p>
+                <form id="contact-form" class="contact-form">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" name="message" rows="6" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="cta-button">Send Message <i class="fas fa-paper-plane" style="margin-left: 8px;"></i></button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer-bottom">
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Mohid-Master/" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" title="GitHub"><i class="fab fa-github"></i><span>GitHub</span></a>
+                <!-- <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" title="LinkedIn"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a> -->
+                <a href="https://www.youtube.com/@I-am-Mohid" target="_blank" rel="noopener noreferrer" aria-label="YouTube Channel" title="YouTube"><i class="fab fa-youtube"></i><span>YouTube</span></a>
+                <a href="https://www.instagram.com/mohid_852/" target="_blank" title="Instagram" rel="noopener noreferrer"  aria-label="Instagram"><i class="fa-brands fa-instagram"></i><span>Instagram</span></a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Mohid. All Rights Reserved.</p>
+            <p>Designed with <i class="fas fa-heart heart-icon"></i> and <i class="fas fa-mug-hot" style="color: #ffc107"></i> by Mohid &amp; A Helpful Friend!</p>
+        </div>
+    </footer>
+
+    <button id="back-to-top" title="Go to top" aria-label="Scroll to top of page"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- Game Modal -->
+    <div id="game-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal-button" aria-label="Close game modal"><i class="fas fa-times"></i></button>
+            <iframe id="game-iframe" src="" title="Embedded Game Content" allowfullscreen loading="lazy"></iframe>
+            <p id="modal-message"></p>
+        </div>
     </div>
 
-    <section id="home" class="home-section">
-        <div class="intro">
-            <h1>Welcome to My Portfolio</h1>
-            <p>I'm a passionate developer with a love for creating beautiful and functional web applications.</p>
-        </div>
-        <div class="blob-container">
-            <div class="blob">
-                <img src="me.jpg" alt="Your Image" />
-            </div>
-        </div>
-    </section>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuIcon = document.getElementById('menu-icon');
+        const navLinksList = document.getElementById('nav-links-list');
+        const allNavLinks = document.querySelectorAll('#nav-links-list a');
+        const currentYearSpan = document.getElementById('current-year');
+        const backToTopButton = document.getElementById('back-to-top');
+        const contentSections = document.querySelectorAll('main > section[id]');
 
-    <section id="recommendations" class="recommendations">
-        <h2>Recommendations</h2>
-        <p>Here are some projects I've worked on:</p>
-        <!-- Add project cards or details here -->
-    </section>
+        // --- Hamburger Menu Toggle ---
+        if (menuIcon && navLinksList) {
+            const icon = menuIcon.querySelector('i');
+            menuIcon.addEventListener('click', () => {
+                const isExpanded = menuIcon.getAttribute('aria-expanded') === 'true' || false;
+                menuIcon.setAttribute('aria-expanded', !isExpanded);
+                navLinksList.classList.toggle('active');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            });
 
-    <script src="script.js"></script>
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinksList.classList.contains('active')) {
+                        navLinksList.classList.remove('active');
+                        const icon = menuIcon.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                        menuIcon.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+        }
+
+        // --- Set Current Year in Footer ---
+        if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
+
+        // --- Back to Top Button ---
+        if (backToTopButton) {
+            window.addEventListener('scroll', () => { backToTopButton.classList.toggle('visible', window.pageYOffset > 300); });
+            backToTopButton.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        }
+
+        // --- Reveal Sections on Scroll ---
+        if (contentSections.length > 0) {
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        // entry.target.classList.remove('visible'); // Optional: re-animate on scroll up
+                    }
+                });
+            }, { rootMargin: "0px 0px -150px 0px", threshold: 0.1 });
+            contentSections.forEach(section => sectionObserver.observe(section));
+        }
+
+        // --- Active Nav Link Highlighting on Scroll ---
+        if (allNavLinks.length > 0 && contentSections.length > 0) {
+            let currentActiveSectionId = null;
+            const navLinkObserverOptions = {
+                root: null,
+                rootMargin: '0px 0px -55% 0px',
+                threshold: 0
+            };
+            const navLinkObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        currentActiveSectionId = entry.target.getAttribute('id');
+                    }
+                });
+                allNavLinks.forEach(link => {
+                    link.classList.remove('active');
+                    const href = link.getAttribute('href');
+                    if (href && href.substring(1) === currentActiveSectionId) {
+                        link.classList.add('active');
+                    }
+                });
+                if (!currentActiveSectionId && window.pageYOffset < 50) {
+                    allNavLinks.forEach(link => link.classList.remove('active'));
+                    const homeLink = document.querySelector('#nav-links-list a[href="#home"]');
+                    if (homeLink) homeLink.classList.add('active');
+                }
+            }, navLinkObserverOptions);
+            contentSections.forEach(section => navLinkObserver.observe(section));
+            setTimeout(() => {
+                let initialActiveId = null;
+                if (window.location.hash) {
+                    initialActiveId = window.location.hash.substring(1);
+                } else {
+                    for (const section of contentSections) {
+                        const rect = section.getBoundingClientRect();
+                        if (rect.top >= 0 && rect.top < window.innerHeight / 2) {
+                            initialActiveId = section.getAttribute('id');
+                            break;
+                        }
+                    }
+                }
+                if (!initialActiveId && window.pageYOffset < 50) initialActiveId = "home";
+                if (initialActiveId) {
+                    currentActiveSectionId = initialActiveId;
+                    allNavLinks.forEach(link => {
+                        link.classList.remove('active');
+                        const href = link.getAttribute('href');
+                        if (href && href.substring(1) === initialActiveId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            }, 100);
+        }
+        
+        // --- Simple Contact Form Handling ---
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = contactForm.querySelector('#name').value;
+                const email = contactForm.querySelector('#email').value;
+                const message = contactForm.querySelector('#message').value;
+                if (!name || !email || !message) {
+                    alert('Please fill in all fields.'); return;
+                }
+                alert(`Thank you, ${name}! Your message has been "sent" (demo).`);
+                contactForm.reset();
+            });
+        }
+
+        // --- Vanilla JS Infinite Carousel Logic ---
+        function initializeInfiniteCarousel(carouselId) {
+            const carouselElem = document.getElementById(carouselId);
+            if (!carouselElem) return;
+
+            const wrapper = carouselElem.querySelector('.carousel-wrapper');
+            const prevButton = carouselElem.parentElement.querySelector('.prev-button');
+            const nextButton = carouselElem.parentElement.querySelector('.next-button');
+            
+            let originalSlidesHTML = ''; // Store original slides for re-initialization
+            if (wrapper && wrapper.children.length > 0) {
+                originalSlidesHTML = Array.from(wrapper.children).map(slide => slide.outerHTML).join('');
+            } else {
+                 // No slides initially, hide controls
+                if(prevButton) prevButton.style.display = 'none';
+                if(nextButton) nextButton.style.display = 'none';
+                return; // Exit if no slides
+            }
+
+            let slidesPerView = 1;
+            let slideWidth = 0;
+            let isTransitioning = false;
+            let totalClonedEachSide = 0;
+            // currentLogicalIndex is not strictly needed for this append/prepend method if we always reset to a fixed visual point
+
+            function setupCarousel() {
+                isTransitioning = true; // Prevent interactions during setup
+                wrapper.innerHTML = originalSlidesHTML; // Restore original slides
+                let currentSlidesInDOM = Array.from(wrapper.children);
+
+                if (currentSlidesInDOM.length === 0) { // Double check after restoring
+                    if(prevButton) prevButton.style.display = 'none';
+                    if(nextButton) nextButton.style.display = 'none';
+                    isTransitioning = false;
+                    return;
+                }
+
+                const desktopSlides = parseInt(carouselElem.dataset.slidesPerViewDesktop) || 1;
+                const tabletSlides = parseInt(carouselElem.dataset.slidesPerViewTablet) || 1;
+                const mobileSlides = parseInt(carouselElem.dataset.slidesPerViewMobile) || 1;
+
+                if (window.innerWidth >= 1024) slidesPerView = desktopSlides;
+                else if (window.innerWidth >= 768) slidesPerView = tabletSlides;
+                else slidesPerView = mobileSlides;
+                
+                const numUniqueSlides = currentSlidesInDOM.length;
+                slidesPerView = Math.min(slidesPerView, numUniqueSlides); // Cannot show more slides than available
+
+                const carouselContainerWidth = carouselElem.offsetWidth;
+                slideWidth = carouselContainerWidth / slidesPerView;
+                
+                totalClonedEachSide = Math.max(slidesPerView, numUniqueSlides > 0 ? 1 : 0);
+                 if (numUniqueSlides < slidesPerView && numUniqueSlides > 0) {
+                    totalClonedEachSide = numUniqueSlides;
+                }
+                if (numUniqueSlides === 0) totalClonedEachSide = 0;
+
+
+                // Clear previous clones explicitly before adding new ones
+                Array.from(wrapper.querySelectorAll('.carousel-slide-clone')).forEach(clone => clone.remove());
+                currentSlidesInDOM = Array.from(wrapper.children); // Re-fetch after clearing clones from originalHTML
+
+                for (let i = 0; i < totalClonedEachSide; i++) {
+                     if (numUniqueSlides > 0) {
+                        const firstClone = currentSlidesInDOM[i % numUniqueSlides].cloneNode(true);
+                        firstClone.classList.add('carousel-slide-clone');
+                        wrapper.appendChild(firstClone);
+
+                        const lastClone = currentSlidesInDOM[numUniqueSlides - 1 - (i % numUniqueSlides)].cloneNode(true);
+                        lastClone.classList.add('carousel-slide-clone');
+                        wrapper.insertBefore(lastClone, wrapper.firstElementChild);
+                    }
+                }
+                
+                Array.from(wrapper.children).forEach(s => {
+                    s.style.minWidth = `${slideWidth}px`;
+                    s.style.maxWidth = `${slideWidth}px`;
+                });
+
+                wrapper.style.transition = 'none';
+                wrapper.style.transform = `translateX(-${totalClonedEachSide * slideWidth}px)`;
+                
+                updateActiveSlidesOnSetup();
+
+                if (prevButton && nextButton) {
+                    const displayStyle = numUniqueSlides > slidesPerView ? 'inline-flex' : 'none';
+                    prevButton.style.display = displayStyle;
+                    nextButton.style.display = displayStyle;
+                }
+                setTimeout(() => { isTransitioning = false; }, 50);
+            }
+            
+            function updateActiveSlidesOnSetup() {
+                const allSlides = Array.from(wrapper.children);
+                allSlides.forEach(s => s.classList.remove('is-active-slide'));
+                for (let i = 0; i < slidesPerView; i++) {
+                    if (allSlides[totalClonedEachSide + i]) {
+                        allSlides[totalClonedEachSide + i].classList.add('is-active-slide');
+                    }
+                }
+            }
+            
+            function updateActiveSlidesOnNav(currentTransform) {
+                const allSlides = Array.from(wrapper.children);
+                allSlides.forEach(s => s.classList.remove('is-active-slide'));
+
+                // Calculate which "real" slides should be active based on the transform
+                // This is an approximation
+                const firstVisibleCloneIndex = Math.round(Math.abs(currentTransform) / slideWidth);
+
+                for (let i = 0; i < slidesPerView; i++) {
+                    const activeIndex = firstVisibleCloneIndex + i;
+                    if (allSlides[activeIndex]) {
+                         allSlides[activeIndex].classList.add('is-active-slide');
+                    }
+                }
+            }
+
+
+            function navigate(direction) {
+                const numUniqueSlides = wrapper.querySelectorAll('.carousel-slide:not(.carousel-slide-clone)').length;
+                if (isTransitioning || numUniqueSlides <= slidesPerView) return;
+                isTransitioning = true;
+
+                const currentTransformVal = parseFloat(getComputedStyle(wrapper).transform.match(/matrix.*\((.+)\)/)[1].split(', ')[4]) || (-totalClonedEachSide * slideWidth) ;
+                
+                wrapper.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                const newTransform = currentTransformVal - direction * slideWidth;
+                wrapper.style.transform = `translateX(${newTransform}px)`;
+                
+                updateActiveSlidesOnNav(newTransform);
+
+                wrapper.addEventListener('transitionend', function handleTransitionEnd() {
+                    wrapper.removeEventListener('transitionend', handleTransitionEnd);
+                    
+                    if (direction === 1) { // Moved right (next)
+                         for(let i=0; i<1; i++){ // Move one slide at a time
+                            wrapper.appendChild(wrapper.children[totalClonedEachSide]);
+                         }
+                    } else { // Moved left (prev)
+                        for(let i=0; i<1; i++){
+                            wrapper.insertBefore(wrapper.children[totalClonedEachSide + numUniqueSlides -1], wrapper.children[totalClonedEachSide]);
+                        }
+                    }
+                    
+                    wrapper.style.transition = 'none';
+                    wrapper.style.transform = `translateX(-${totalClonedEachSide * slideWidth}px)`;
+                    updateActiveSlidesOnSetup(); // Re-center active classes correctly
+
+                    setTimeout(() => { isTransitioning = false; }, 20);
+                }, { once: true });
+            }
+
+            prevButton.addEventListener('click', () => navigate(-1));
+            nextButton.addEventListener('click', () => navigate(1));
+
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(setupCarousel, 250);
+            });
+            setupCarousel(); // Initial setup
+        }
+
+        initializeInfiniteCarousel('project-carousel');
+        initializeInfiniteCarousel('youtube-carousel');
+
+        // --- Game Modal Logic ---
+        const gameModal = document.getElementById('game-modal');
+        const gameIframe = document.getElementById('game-iframe');
+        const modalMessage = document.getElementById('modal-message');
+        const closeModalButton = gameModal ? gameModal.querySelector('.close-modal-button') : null;
+        const playGameButtons = document.querySelectorAll('.play-game-button');
+
+        function openGameModal(gameUrl, gameType) { 
+            if (gameType === 'iframe' && gameUrl) {
+                gameIframe.src = gameUrl; gameIframe.style.display = 'block';
+                if(modalMessage) modalMessage.style.display = 'none';
+            } else {
+                gameIframe.style.display = 'none';
+                if(modalMessage) { modalMessage.textContent = 'Info here.'; modalMessage.style.display = 'block';}
+            }
+            gameModal.classList.add('active'); document.body.style.overflow = 'hidden';
+        }
+        function closeGameModal() { 
+            if (!gameModal) return; gameModal.classList.remove('active');
+            gameIframe.src = ''; document.body.style.overflow = 'auto';
+        }
+        if (closeModalButton) closeModalButton.addEventListener('click', closeGameModal);
+        if (gameModal) {
+            gameModal.addEventListener('click', (event) => { if (event.target === gameModal) closeGameModal(); });
+            window.addEventListener('keydown', (event) => { if (event.key === 'Escape' && gameModal.classList.contains('active')) closeGameModal(); });
+        }
+        playGameButtons.forEach(button => { 
+            if (button.tagName.toLowerCase() === 'a' && button.getAttribute('target') === '_blank') return;
+            button.addEventListener('click', (e) => {
+                e.preventDefault(); const gameUrl = button.dataset.gameUrl; const gameType = button.dataset.gameType || 'iframe';
+                if (gameType === 'iframe' && gameUrl) openGameModal(gameUrl, gameType);
+                else if (gameUrl) window.open(gameUrl, '_blank'); else openGameModal(null, 'message');
+            });
+        });
+    });
+    </script>
 </body>
 </html>

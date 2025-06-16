@@ -103,10 +103,10 @@
 
         /* === SECTION BREAKERS === */
         .section-breaker {
-            height: 60px; /* Reduced height for a more subtle breaker */
+            height: 20px; /* Reduced height for a more subtle breaker */
             position: relative;
             overflow: hidden;
-            margin: 20px 0; /* Add some margin around breakers */
+            margin: 0px 0; /* Add some margin around breakers */
         }
         .section-breaker::before { /* Angled shape */
             content: '';
@@ -114,12 +114,21 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--light-bg);
-            transform: skewY(-1.5deg); /* Softer angle */
+            /* background-color: var(--light-bg); */
+            transform: skewY(-1.7deg); /* Softer angle */
             transform-origin: top left;
         }
         .section-breaker.alt-bg::before {
-            background-color: #fff;
+ 
+        }
+        .section-breaker{
+            /* background-color: black; */
+            /* background: linear-gradient(135deg, #e0f2fe 0%, #cce7ff 100%); */
+            backdrop-filter: blur(8px); 
+            opacity:.5;
+            background: linear-gradient(120deg, #2980b9, #8e44ad, #27ae60, #f39c12);
+            background-size: 300% 300%; /* Reduced size for slower, broader movement */
+            animation: fluidGradient 5s ease infinite alternate; /* Added alternate for smoother reverse */
         }
 
 
@@ -174,10 +183,17 @@
         /* === VANILLA JS CAROUSEL STYLES === */
         .carousel-section { padding: 80px 0; } /* Wrapper for carousel and its title/controls */
         .carousel-container { position: relative; width: 100%; overflow: hidden; margin: 0 auto; }
-        .carousel-wrapper { display: flex; will-change: transform; /* JS will handle transition */ }
+        .carousel-wrapper { display: flex; will-change: transform; padding: 10px 0 40px 0; /* JS will handle transition */ }
         .carousel-slide { box-sizing: border-box; padding: 0 15px; display: flex; justify-content: center; align-items: stretch; flex-shrink: 0; opacity: 0.5; transform: scale(0.9); transition: opacity 0.5s ease, transform 0.5s ease; }
         .carousel-slide.is-active-slide { opacity: 1; transform: scale(1); }
-        .carousel-controls { text-align: center; margin-top: 2rem; }
+        .carousel-controls {    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    /* margin-top: -50%; */
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    left: 0; }
         .carousel-button { background-color: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); border-radius: 50%; cursor: pointer; margin: 0 10px; width: 48px; height: 48px; transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease; display: inline-flex; align-items: center; justify-content: center; box-shadow: var(--box-shadow-light); }
         .carousel-button i { font-size: 1.3rem; color: var(--primary-color); transition: color var(--transition-speed) ease; }
         .carousel-button:hover { background-color: var(--primary-color); transform: scale(1.1); box-shadow: var(--box-shadow-strong); }
@@ -369,12 +385,12 @@
             <div class="hero-content">
                 <div class="hero-text">
                     <h1>Hey, I'm Mohid</h1>
-                    <p class="tagline">A <span class="highlight">Passionate Developer</span> & <span class="highlight">Creative Problem-Solver</span></p>
+                    <p class="tagline">A <span class="highlight">Developer,Seller,Marketer</span> & <span class="highlight">Creative Problem-Solver</span></p>
                     <p>I craft engaging and user-friendly web experiences, transforming ideas into digital realities. Welcome to my creative space!</p>
                     <a href="#projects" class="cta-button">View My Work</a>
                 </div>
                 <div class="hero-image-container">
-                    <img src="pic.png" alt="Mohid - Professional Developer" class="hero-image" loading="eager">
+                    <img src="logo.png" alt="Mohid - Professional Developer" class="hero-image" loading="eager">
                 </div>
             </div>
         </section>
@@ -389,9 +405,9 @@
                          <img src="pic.png" alt="Mohid - About Me Image" loading="lazy">
                     </div>
                     <div class="about-text">
-                        <p>Hello there! I'm Mohid, a dedicated web developer with a strong enthusiasm for building intuitive, dynamic, and visually appealing digital solutions. My journey into the world of programming began with a fascination for how websites work, which quickly evolved into a deep-seated passion for coding and design.</p>
-                        <p>I specialize in front-end technologies like HTML, CSS, and JavaScript, and I'm continually expanding my skillset with frameworks like React and Vue.js. I thrive on tackling challenging problems, learning new technologies, and collaborating on exciting projects. My goal is to not just write code, but to create meaningful and impactful user experiences.</p>
-                        <p>When I'm not immersed in code, you might find me exploring new creative hobbies, gaming, or staying updated with the latest tech trends.</p>
+                        <p>Hello there! I'm Mohid, a web developer with a strong enthusiasm for building intuitive, dynamic, and visually appealing digital solutions. My journey into the world of programming began with a fascination for how websites work from html to deep logic js & py codes, which quickly evolved into a deep-seated passion for coding and design.</p>
+                        <p>I specialize in front-end technologies like HTML, CSS, and JavaScript, and I'm continually expanding my skillset with frameworks like React and gscript. I thrive on tackling challenging problems, learning new technologies, and collaborating on exciting projects. My goal is to not just write code, but to create meaningful and impactful user experiences.</p>
+                        <p>When I'm not immersed in code, you might find me exploring new creative hobbies,reselling,marketing, gaming, or staying updated with the latest tech trends.</p>
                         <h3>My Core Skills:</h3>
                         <ul class="skills-list">
                             <li>HTML5 & Semantics</li>
@@ -418,7 +434,18 @@
                 <p class="section-intro">Here's a selection of projects I've developed, showcasing my skills and dedication. Explore them all!</p>
                 <div class="carousel-container project-carousel" id="project-carousel" data-slides-per-view-desktop="3" data-slides-per-view-tablet="2" data-slides-per-view-mobile="1">
                     <div class="carousel-wrapper">
-                        <div class="carousel-slide">
+                            <div class="carousel-slide">
+                            <div class="project-card" style="max-width: 360px;">
+                                <img src="mds.png" alt="MDS QuicklyYours" loading="lazy"> <!-- Added your image -->
+                                <div class="project-info">
+                                    <h3>MDS QuicklyYours</h3>
+                                    <p>A dynamic e-commerce or service platform concept named "QuicklyYours," focusing on user-friendly browsing, product display, and a streamlined interaction flow. My call project.</p>
+                                    <div class="project-tags"><span>HTML</span><span>CSS</span><span>JS</span><span>Concept</span></div>
+                                    <a href="https://mds-quicklyyour.netlify.app/" class="project-link" target="_blank" rel="noopener noreferrer">Visit now<i class="fas fa-external-link-alt"></i></a><a href="https://github.com/Mohid-Master/MDS-QuicklyYours/tree/main" class="project-link" target="_blank" rel="noopener noreferrer">View Concept <i class="fas fa-lightbulb"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="carousel-slide">
                             <div class="project-card">
                                 <img src="pluton.png" alt="Plutons Theme Clone" loading="lazy">
                                 <div class="project-info">
@@ -428,7 +455,7 @@
                                     <a href="https://plutons.netlify.app" class="project-link" target="_blank" rel="noopener noreferrer">View Project <i class="fas fa-external-link-alt"></i></a>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="carousel-slide">
                              <div class="project-card" style="max-width: 350px;">
                                 <img src="cctv.png" alt="CCTV News Website Clone" loading="lazy">
@@ -451,17 +478,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="carousel-slide">
-                            <div class="project-card" style="max-width: 360px;">
-                                <img src="mds.png" alt="MDS QuicklyYours" loading="lazy"> <!-- Added your image -->
-                                <div class="project-info">
-                                    <h3>MDS QuicklyYours</h3>
-                                    <p>A dynamic e-commerce or service platform concept named "QuicklyYours," focusing on user-friendly browsing, product display, and a streamlined interaction flow. My call project.</p>
-                                    <div class="project-tags"><span>HTML</span><span>CSS</span><span>JS</span><span>Concept</span></div>
-                                    <a href="https://mds-quicklyyour.netlify.app/" class="project-link" target="_blank" rel="noopener noreferrer">Visit now<i class="fas fa-external-link-alt"></i></a><a href="https://github.com/Mohid-Master/MDS-QuicklyYours/tree/main" class="project-link" target="_blank" rel="noopener noreferrer">View Concept <i class="fas fa-lightbulb"></i></a>
-                                </div>
-                            </div>
-                        </div>
+                    
                          <div class="carousel-slide">
                             <div class="project-card">
                                 <img src="weather.png" alt="Weather Application" loading="lazy"> <!-- Added your image -->
@@ -552,8 +569,13 @@
                     </div>                 
                     <div class="hobby-card">
                         <i class="fas fa-shop"></i>
-                        <h3>Ecomerce and dropshipper</h3>
-                        <p>i also resell product</p>
+                        <h3>Ecomerce and Dropshipper</h3>
+                        <p>I also resell products through out MDS~QuicklyYours & marketing</p>
+                    </div> 
+                    <div class="hobby-card">
+                        <i class="fas fa-youtube"></i>
+                        <h3>Digital AI Content Creator</h3>
+                        <p>I also produces various Youtube video & short video for fun & educational & most monetizing purpose using ai and smartly hardwork</p>
                     </div>
                 </div>
             </div>

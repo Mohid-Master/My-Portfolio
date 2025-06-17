@@ -15,6 +15,9 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- GSAP & ScrollTrigger CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zIAlSuGbVEhlmWuidRX綰stage_t3PdirRobotT2uN" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <style>
         /* === GLOBAL STYLES & VARIABLES === */
@@ -356,6 +359,206 @@
             .social-links a { margin: 0 6px; width: 40px; height: 40px; }
             .social-links a i { font-size: 1.1em; }
         }
+        /* === SERVICES I OFFER SECTION === */
+.services-offer-section {
+    background-color: #ffffff; /* Or a very light, distinct color */
+    padding: 100px 0 80px; /* More padding at the top */
+    position: relative; /* For absolute positioned elements like parallax bg */
+    overflow: hidden; /* To contain parallax or other effects */
+    /* Initially hidden for GSAP animation */
+    opacity: 0;
+    transform: translateY(-50px); /* Start slightly above */
+}
+
+.services-background-parallax { /* Optional: for a subtle parallax image/gradient */
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    /* Example: background-image: url('path/to/subtle-bg.jpg'); */
+    /* background-attachment: fixed; /* Creates parallax */
+    /* background-position: center; */
+    /* background-repeat: no-repeat; */
+    /* background-size: cover; */
+    /* opacity: 0.1; */
+    z-index: 0;
+    /* Or a subtle gradient */
+    background: linear-gradient(135deg, rgba(0,123,255,0.03) 0%, rgba(255,255,255,0) 60%);
+}
+
+.services-offer-section .container {
+    position: relative; /* To keep content above the parallax bg */
+    z-index: 1;
+}
+
+.services-title {
+    color: var(--dark-bg); /* Or var(--primary-color) */
+    margin-bottom: 1.5rem !important; /* Override general h2 margin if needed */
+}
+.services-title::after { /* Custom underline for this section's title */
+    background-color: var(--primary-color); /* Or var(--accent-color) */
+}
+.services-intro {
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+    margin-bottom: 4rem; /* More space before cards */
+}
+
+.services-horizontal-scroll-container {
+    overflow-x: auto;
+    overflow-y: hidden; /* Hide vertical scrollbar if any content overflows */
+    padding: 20px 0 30px; /* Padding for scrollbar and breathing room */
+    /* Custom scrollbar styling (optional, browser support varies) */
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--light-bg);
+}
+.services-horizontal-scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+.services-horizontal-scroll-container::-webkit-scrollbar-track {
+    background: var(--light-bg);
+    border-radius: 4px;
+}
+.services-horizontal-scroll-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 4px;
+    border: 2px solid var(--light-bg);
+}
+
+.services-card-track {
+    display: flex;
+    flex-wrap: nowrap; /* Ensure horizontal layout */
+    gap: 2rem; /* Space between cards */
+    padding-left: 5px; /* Small offset for first card */
+    padding-right: 5px; /* Small offset for last card */
+}
+
+.service-card {
+    flex: 0 0 auto; /* Prevent shrinking, allow natural width */
+    width: 320px; /* Default width, can be adjusted */
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-strong);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    border-top: 5px solid var(--primary-color);
+    position: relative; /* For badge */
+    opacity: 0; /* For GSAP stagger animation */
+    transform: translateY(30px); /* For GSAP stagger animation */
+}
+.service-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.service-card.highlight-service {
+    border-top-color: var(--accent-color);
+    box-shadow: 0 10px 30px rgba(var(--accent-color), 0.2);
+}
+.service-badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--accent-color);
+    color: var(--dark-bg);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+.service-card-icon {
+    font-size: 2.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    height: 60px; /* Fixed height for icon area */
+    line-height: 60px;
+}
+.service-card.highlight-service .service-card-icon {
+    color: var(--accent-color);
+}
+
+.service-card-title {
+    font-family: var(--font-headings);
+    font-size: 1.5rem;
+    color: var(--dark-bg);
+    margin-bottom: 0.75rem;
+}
+
+.service-card-price {
+    font-size: 1rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+.service-card-price .price-figure {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--primary-color);
+}
+.service-card.highlight-service .price-figure {
+    color: var(--accent-color);
+}
+
+
+.service-card-description {
+    font-size: 0.95rem;
+    color: var(--secondary-color);
+    min-height: 70px; /* Ensure consistent height for description area */
+    margin-bottom: 1.5rem;
+}
+
+.service-card-features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    min-height: 100px; /* Consistent height */
+}
+.service-card-features li {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+.service-card-features li i {
+    color: var(--primary-color); /* Checkmark color */
+    margin-right: 10px;
+    font-size: 1.1em;
+}
+.service-card.highlight-service .service-card-features li i {
+    color: var(--accent-color);
+}
+
+.service-card-cta {
+    margin-top: auto; /* Push CTA to bottom if card content varies */
+    padding: 10px 25px;
+    font-size: 0.9rem;
+}
+.service-card-cta.primary-cta {
+    background-color: var(--primary-color);
+    color: white;
+}
+.service-card-cta.primary-cta:hover {
+    background-color: #0056b3;
+}
+
+.services-note {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-top: 2.5rem;
+    font-style: italic;
+}
+
+/* Ensure section breaker after services is visible on its background */
+#services-offer + .section-breaker::before {
+    background-color: #e0f2fe; /* Match Hero section background */
+}
     </style>
 </head>
 <body>
@@ -367,6 +570,7 @@
             </div>
             <ul class="nav-links" id="nav-links-list">
                 <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#services-offer">Services & Offer</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#games">Games</a></li>
@@ -394,7 +598,112 @@
                 </div>
             </div>
         </section>
+        <div class="section-breaker"></div>
 
+        <!-- ==================================================
+     SERVICES I OFFER SECTION 
+================================================== -->
+<section id="services-offer" class="content-section services-offer-section">
+    <div class="services-background-parallax"></div> <!-- For parallax effect -->
+    <div class="container">
+        <h2 class="services-title">My Web Crafting Services</h2>
+        <p class="section-intro services-intro">
+            Transforming your vision into a compelling digital presence. I offer tailored web solutions with a focus on quality, performance, and client satisfaction.
+        </p>
+
+        <div class="services-horizontal-scroll-container">
+            <div class="services-card-track">
+                <!-- Service Card 1: Portfolio -->
+                <div class="service-card">
+                    <div class="service-card-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <h3 class="service-card-title">Portfolio Website</h3>
+                    <p class="service-card-price">Starting from <span class="price-figure">Rs. 1,000</span></p>
+                    <p class="service-card-description">
+                        A stunning, modern portfolio to showcase your talents, projects, and personality. Perfect for freelancers, artists, and professionals.
+                    </p>
+                    <ul class="service-card-features">
+                        <li><i class="fas fa-check-circle"></i> Clean & Responsive Design</li>
+                        <li><i class="fas fa-check-circle"></i> Fast Loading Speed</li>
+                        <li><i class="fas fa-check-circle"></i> Up to 3 Revisions</li>
+                        <li><i class="fas fa-check-circle"></i> SEO Basics Included</li>
+                    </ul>
+                    <button class="cta-button service-card-cta whatsapp-contact-button" 
+            data-service-name="Portfolio Website Package">Get Started</button>
+                </div>
+
+                <!-- Service Card 2: Simple Business Website -->
+                <div class="service-card">
+                    <div class="service-card-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3 class="service-card-title">Simple Business Website</h3>
+                    <p class="service-card-price">Starting from <span class="price-figure">Rs. 5,000</span></p>
+                    <p class="service-card-description">
+                        Establish your business online with a professional, informative website. Ideal for startups, small businesses, and local services.
+                    </p>
+                    <ul class="service-card-features">
+                        <li><i class="fas fa-check-circle"></i> Up to 5 Pages (e.g., Home, About, Services, Contact)</li>
+                        <li><i class="fas fa-check-circle"></i> Mobile-First Responsive Design</li>
+                        <li><i class="fas fa-check-circle"></i> Contact Form Integration</li>
+                        <li><i class="fas fa-check-circle"></i> Basic On-Page SEO</li>
+                    </ul>
+                     <button class="cta-button service-card-cta whatsapp-contact-button" 
+            data-service-name="Simple Business Website Package">Discuss Your Business</button>
+                </div>
+
+                <!-- Service Card 3: E-commerce with Mobile App -->
+                <div class="service-card highlight-service"> <!-- Highlighted card -->
+                    <div class="service-badge">Most Popular</div>
+                    <div class="service-card-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <h3 class="service-card-title">Advanced E-commerce Solution</h3>
+                    <p class="service-card-price">Starting from <span class="price-figure">Rs. 10,000 - 15,000</span></p>
+                    <p class="service-card-description">
+                        A polished e-commerce platform with a basic mobile app integration concept using React Native (or similar WebView approach) and an admin panel.
+                    </p>
+                    <ul class="service-card-features">
+                        <li><i class="fas fa-check-circle"></i> Custom E-commerce Design</li>
+                        <li><i class="fas fa-check-circle"></i> Product Management & Listings</li>
+                        <li><i class="fas fa-check-circle"></i> Basic Payment Gateway Setup</li>
+                        <li><i class="fas fa-check-circle"></i> Conceptual Mobile App (WebView)</li>
+                        <li><i class="fas fa-check-circle"></i> User-Friendly Admin Panel</li>
+                    </ul>
+                <button class="cta-button service-card-cta primary-cta whatsapp-contact-button" 
+            data-service-name="Advanced E-commerce Solution Package">Launch Your Store</button>
+                </div>
+                
+                <!-- Service Card 4: Full Package with GSheet Admin App -->
+                <div class="service-card">
+                    <div class="service-card-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="service-card-title">Premium Custom Solution</h3>
+                     <p class="service-card-price">Starting from <span class="price-figure">Rs. 30,000 - 45,000</span></p>
+                    <p class="service-card-description">
+                        A fully responsive, custom website PLUS a unique admin mobile app connected via Google Sheets & Apps Script. Highly customizable for user needs.
+                    </p>
+                    <ul class="service-card-features">
+                        <li><i class="fas fa-check-circle"></i> Bespoke Website Design & Development</li>
+                        <li><i class="fas fa-check-circle"></i> Google Sheet-Powered Admin App (Android)</li>
+                        <li><i class="fas fa-check-circle"></i> Scalable & Secure Architecture</li>
+                        <li><i class="fas fa-check-circle"></i> 3 Months Post-Launch Support</li>
+                        <li><i class="fas fa-check-circle"></i> Extensive Customization Options</li>
+                    </ul>
+                      <button class="cta-button service-card-cta whatsapp-contact-button" 
+            data-service-name="Premium Custom Solution Package (GSheet Admin)">Build Your Vision</button>
+</div>
+                </div>
+                 <!-- Add more service cards as needed -->
+            </div>
+        </div>
+        <p class="services-note">
+            * Prices are indicative and may vary based on project complexity and specific requirements. Let's discuss your needs for a precise quote!
+        </p>
+    </div>
+</section>
         <div class="section-breaker"></div>
 
         <section id="about" class="content-section about-section">
@@ -626,7 +935,9 @@
                     <div class="form-group">
                         <textarea id="message" name="message" rows="6" placeholder="Your Message" required></textarea>
                     </div>
-                    <button type="submit" class="cta-button">Send Message <i class="fas fa-paper-plane" style="margin-left: 8px;"></i></button>
+    <button type="submit" class="cta-button whatsapp-contact-button" data-service-name="General Inquiry">
+        Send Message <i class="fas fa-paper-plane" style="margin-left: 8px;"></i>
+    </button>
                 </form>
             </div>
         </section>
@@ -766,22 +1077,101 @@
                 }
             }, 100);
         }
-        
-        // --- Simple Contact Form Handling ---
-        const contactForm = document.getElementById('contact-form');
-        if (contactForm) {
-            contactForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const name = contactForm.querySelector('#name').value;
-                const email = contactForm.querySelector('#email').value;
-                const message = contactForm.querySelector('#message').value;
-                if (!name || !email || !message) {
-                    alert('Please fill in all fields.'); return;
-                }
-                alert(`Thank you, ${name}! Your message has been "sent" (demo).`);
-                contactForm.reset();
-            });
+        // Place this inside your DOMContentLoaded listener
+
+const whatsAppNumber = "923183369621"; // Your WhatsApp number
+
+// --- WhatsApp Contact Button Logic ---
+const whatsAppContactButtons = document.querySelectorAll('.whatsapp-contact-button');
+
+whatsAppContactButtons.forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent form submission if it's a submit button
+
+        const serviceName = this.dataset.serviceName || "General Inquiry"; // Get service name from button or default
+
+        // Check if this button is part of the main contact form
+        const form = this.closest('form');
+        let userName = "User"; // Default user name
+        let userEmail = ""; // Optional
+        let userMessage = ""; // Optional, for the main contact form
+
+        if (form && form.id === 'contact-form') {
+            // If it's the main contact form, try to get user input
+            const nameInput = form.querySelector('#name');
+            const emailInput = form.querySelector('#email'); // If you want to include email
+            const messageInput = form.querySelector('#message');
+
+            if (nameInput && nameInput.value.trim() !== "") {
+                userName = nameInput.value.trim();
+            }
+            if (emailInput && emailInput.value.trim() !== "") {
+                userEmail = emailInput.value.trim(); // Optional: include email in WA message
+            }
+            if (messageInput && messageInput.value.trim() !== "") {
+                userMessage = messageInput.value.trim();
+            }
+
+            // Basic validation for the main contact form inputs
+            if (serviceName === "General Inquiry" && (!nameInput.value.trim() || !emailInput.value.trim() || !messageInput.value.trim())) {
+                 alert('Please fill in all fields (Name, Email, Message) for a general inquiry.');
+                 return; // Stop if main form fields are not filled
+            }
         }
+
+        let whatsappMessage = "";
+
+        if (serviceName === "General Inquiry") {
+            whatsappMessage = `Hello Mohid,\n\nMy name is ${userName}.\n`;
+            if (userEmail) {
+                whatsappMessage += `My email is ${userEmail}.\n\n`;
+            }
+            whatsappMessage += `I have a general inquiry regarding your services:\n"${userMessage}"\n\nI found your portfolio (i-am-mohid.netlify.app) and would like to discuss further.`;
+        } else {
+            // For service-specific buttons
+            whatsappMessage = `Hello Mohid,\n\nI'm interested in your "${serviceName}".\n\nCould you please provide more details or discuss how we can proceed?\n\nMy name is [Your Name Here - User will fill this in WhatsApp]\nI found your portfolio (i-am-mohid.netlify.app).`;
+            // We don't take name/email from form for service card clicks to make it quicker for user.
+            // They can type their name directly in WhatsApp.
+        }
+
+        const encodedMessage = encodeURIComponent(whatsappMessage);
+        const whatsappUrl = `https://wa.me/${whatsAppNumber}?text=${encodedMessage}`;
+
+        // Open WhatsApp
+        window.open(whatsappUrl, '_blank');
+
+        // Optionally, reset the main contact form if it was used
+        if (form && form.id === 'contact-form') {
+            form.reset();
+        }
+    });
+});
+
+// Remove or comment out your old contactForm event listener
+/*
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        // ... old logic ...
+    });
+}
+*/
+        // --- Simple Contact Form Handling ---
+        // const contactForm = document.getElementById('contact-form');
+        // if (contactForm) {
+        //     contactForm.addEventListener('submit', (e) => {
+        //         e.preventDefault();
+        //         const name = contactForm.querySelector('#name').value;
+        //         const email = contactForm.querySelector('#email').value;
+        //         const message = contactForm.querySelector('#message').value;
+        //         if (!name || !email || !message) {
+        //             alert('Please fill in all fields.'); return;
+        //         }
+        //         alert(`Thank you, ${name}! Your message has been "sent" (demo).`);
+        //         contactForm.reset();
+        //     });
+        // }
+        
 
         // --- Vanilla JS Infinite Carousel Logic ---
         function initializeInfiniteCarousel(carouselId) {
@@ -985,6 +1375,77 @@
             });
         });
     });
+            // ... (Keep all your existing JS for menu, scroll, modal, carousels etc.)
+
+    // --- GSAP Animations for Services Section ---
+    gsap.registerPlugin(ScrollTrigger);
+
+    const servicesSection = document.getElementById('services-offer');
+
+    if (servicesSection) {
+        // Animate the section itself into view
+        gsap.to(servicesSection, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: servicesSection,
+                start: "top 80%", // Start animation when 80% of the top of the section hits the viewport
+                // markers: true, // For debugging
+                toggleActions: "play none none none" // Play once on enter
+            }
+        });
+
+        // Stagger animation for service cards
+        gsap.fromTo(".service-card", 
+            { opacity: 0, y: 50, scale: 0.95 },
+            {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.7,
+                ease: "power3.out",
+                stagger: 0.2, // Stagger start time for each card
+                scrollTrigger: {
+                    trigger: ".services-card-track",
+                    start: "top 85%", // Start when the card track is 85% in view
+                    // markers: true, // For debugging
+                    toggleActions: "play none none none"
+                }
+            }
+        );
+        
+        // Optional: Simple parallax for the services section background
+        const servicesBgParallax = servicesSection.querySelector('.services-background-parallax');
+        if (servicesBgParallax) {
+            gsap.to(servicesBgParallax, {
+                yPercent: -20, // Move background up by 20% of its height as section scrolls
+                ease: "none",
+                scrollTrigger: {
+                    trigger: servicesSection,
+                    start: "top bottom", // When top of section hits bottom of viewport
+                    end: "bottom top", // When bottom of section hits top of viewport
+                    scrub: true, // Smooth scrubbing effect
+                    // markers: true
+                }
+            });
+        }
+
+        // Optional: Animate title and intro text
+        gsap.from([".services-title", ".services-intro"], {
+            opacity: 0,
+            y: 30,
+            duration: 0.8,
+            ease: "power2.out",
+            stagger: 0.15,
+            scrollTrigger: {
+                trigger: servicesSection,
+                start: "top 80%",
+                toggleActions: "play none none none"
+            }
+        });
+    }
     </script>
 </body>
 </html>

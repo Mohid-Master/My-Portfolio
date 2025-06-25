@@ -343,31 +343,34 @@
         #back-to-top:hover { background-color: #0056b3; transform: scale(1.1) translateY(-2px); }
         
 /* Floating WhatsApp Button (Replaced Chat) */
+.whatsapp-button:hover {
+    background-color: #1f2121c7;
+    transform: scale(1.1);
+    backdrop-filter: blur(4px);
+    color: white;
+}
+
+
 .whatsapp-button {
     position: fixed;
-    bottom: 80px;
-    right: 30px;
-    background-color: #25d366c9; /* WhatsApp green with transparency */
+    bottom: 10px;
+    left: 10px;
+    background-color: #25d366c9;
     color: #fff;
     border-radius: 50%;
-    width: 65px;
-    height: 65px;
+    width: 50px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2em;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    font-size: 25px;
+    box-shadow: 0 6px 15px rgb(0 0 0 / 25%);
     cursor: pointer;
-    z-index: 1001; /* Higher than header */
+    z-index: 1001;
     transition: background-color 0.3s ease, transform 0.3s ease;
     text-decoration: none;
-    backdrop-filter: blur(5px); /* Added for a subtle glass effect */
+    backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-}
-
-.whatsapp-button:hover {
-    background-color: #128c7e; /* Darker WhatsApp green */
-    transform: scale(1.1);
 }
 /* Glassmorphism for WhatsApp button in Neon theme */
 body.theme-neon .whatsapp-button {

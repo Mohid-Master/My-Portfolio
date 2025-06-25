@@ -341,7 +341,46 @@
         #back-to-top i { font-size: 1.4rem; }
         #back-to-top.visible { opacity: 1; visibility: visible; }
         #back-to-top:hover { background-color: #0056b3; transform: scale(1.1) translateY(-2px); }
+        
+/* Floating WhatsApp Button (Replaced Chat) */
+.whatsapp-button {
+    position: fixed;
+    bottom: 80px;
+    right: 30px;
+    background-color: #25d366c9; /* WhatsApp green with transparency */
+    color: #fff;
+    border-radius: 50%;
+    width: 65px;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    z-index: 1001; /* Higher than header */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    backdrop-filter: blur(5px); /* Added for a subtle glass effect */
+    -webkit-backdrop-filter: blur(5px);
+}
 
+.whatsapp-button:hover {
+    background-color: #128c7e; /* Darker WhatsApp green */
+    transform: scale(1.1);
+}
+/* Glassmorphism for WhatsApp button in Neon theme */
+body.theme-neon .whatsapp-button {
+    background-color: rgba(var(--primary-color-rgb, 0, 255, 255), 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 0 15px rgba(var(--primary-color-rgb, 0, 255, 255), 0.6), 0 0 8px rgba(var(--accent-color-rgb, 255, 0, 255), 0.4);
+}
+body.theme-neon .whatsapp-button:hover {
+    box-shadow: 0 0 25px rgba(var(--primary-color-rgb, 0, 255, 255), 0.8), 0 0 12px rgba(var(--accent-color-rgb, 255, 0, 255), 0.6);
+}
+
+        
         /* === RESPONSIVE DESIGN === */
         @media (max-width: 992px) {
             .hero-content { flex-direction: column; text-align: center; gap: 2rem; }
@@ -984,7 +1023,10 @@
             <p>Designed with <i class="fas fa-heart heart-icon"></i> and <i class="fas fa-mug-hot" style="color: #ffc107"></i> by Mohid &amp; A Helpful Friend!</p>
         </div>
     </footer>
-
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/+92 332 2473167?text=I%20saw%20your%20profile%20and%20please%20provide%20more%20details%20or%20discuss%20how%20we%20can%20proceed?" class="whatsapp-button" target="_blank" id="whatsappButton" aria-label="Contact us on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
     <button id="back-to-top" title="Go to top" aria-label="Scroll to top of page"><i class="fas fa-arrow-up"></i></button>
 
     <!-- Game Modal -->
@@ -1475,6 +1517,11 @@ if (contactForm) {
             }
         });
     }
+// WhatsApp Button Link (replace YOURPHONENUMBER)
+const whatsappButton = document.getElementById('whatsappButton');
+const whatsappNumber = '+923183369621'; // Replace with the actual WhatsApp number (e.g., +923001234567)
+whatsappButton.href = `https://wa.me/${whatsappNumber}?text=I%20saw%20your%20profile%20and%20please%20provide%20more%20details%20or%20discuss%20how%20we%20can%20proceed?`;
+
     </script>
 </body>
 </html>

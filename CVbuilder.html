@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohid's Resume Builder</title>
+    <!-- Google Fonts (Default, Modern, Classic options) -->
+    <link id="fontLinkDefault" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link id="fontLinkModern" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" disabled>
+    <link id="fontLinkClassic" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet" disabled>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- html2pdf.js for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            /* Mohid Default Theme */
+            --primary-color: #007bff;
+            --accent-color: #ffc107;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --card-bg: #fff;
+            --border-radius: 8px;
+            --shadow-light: 0 4px 10px rgba(0,0,0,0.08);
+            --font-main: 'Roboto', sans-serif;
+            --font-heading: 'Poppins', sans-serif;
+
+            /* Green Theme (hidden by default, updated by JS) */
+            /* --primary-color-green: #28a745; */
+            /* --accent-color-green: #ffdb00; */
+            /* --text-color-green: #333; */
+
+            /* Purple Theme (hidden by default, updated by JS) */
+            /* --primary-color-purple: #6f42c1; */
+            /* --accent-color-purple: #ff7f50; */
+            /* --text-color-purple: #333; */
+        }
+
+        body {
+            font-family: var(--font-main);
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1400px;
+            margin-top: 20px;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .builder-panel, .resume-preview-container {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            flex: 1;
+            min-width: 450px; /* Ensure minimum width for panels */
+        }
+
+        .builder-panel {
+            max-height: calc(100vh - 40px); /* Limit height for scrollability */
+            overflow-y: auto; /* Enable scrolling for forms */
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        textarea,
+        select { /* Added select styling */
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: var(--font-main);
+            box-sizing: border-box; /* Ensures padding doesn't make it wider */
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .add-section-btn, .remove-section-btn {
+            background-color: #28a745;
+            margin-right: 10px;
+        }
+        .remove-section-btn {
+            background-color: #dc3545;
+        }
+        .add-section-btn:hover { background-color: #218838; }
+        .remove-section-btn:hover { background-color: #c82333; }
+
+        .section-item {
+            border: 1px solid #eee;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: var(--border-radius);
+            background-color: var(--light-bg);
+            position: relative;
+            page-break-inside: avoid; /* Hint to avoid breaking inside this element for print */
+        }
+        .section-item .remove-section-btn {
+            margin-top: 5px; /* Adjust button margin within item */
+        }
+
+        /* --- Resume Preview Styling --- */
+        .resume-preview-container {
+            flex: 1.2; /* Make resume preview slightly larger */
+            position: sticky;
+            top: 20px; /* Stick to top while scrolling */
+            max-height: calc(100vh - 40px); /* Adjust max-height if needed */
+            overflow-y: auto; /* Enable scrolling for preview */
+            padding: 0; /* Remove internal padding for controlled resume styling */
+        }
+
+        #resume-output {
+            padding: 30px; /* Actual resume content padding */
+            box-sizing: border-box; /* Include padding in width/height */
+            min-height: 297mm; /* A4 height, helps with PDF layout */
+            max-width: 210mm; /* A4 width */
+            margin: auto;
+            background: white;
+        }
+
+        #resume-output h2 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            page-break-after: avoid; /* Keep heading with its content */
+        }
+        #resume-output h3 {
+            font-size: 1.2rem;
+            color: #444;
+            margin-bottom: 5px;
+            page-break-after: avoid; /* Keep subheading with its content */
+        }
+        #resume-output p {
+            margin-bottom: 8px;
+            page-break-inside: avoid; /* Avoid breaking paragraphs */
+        }
+        #resume-output ul {
+            /* list-style-type: disc; */
+            padding-left: 10px;
+            margin-bottom: 10px;
+            page-break-inside: avoid; /* Avoid breaking lists */
+        }
+        #resume-output ul li {
+            margin-bottom: 5px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            page-break-after: avoid; /* Keep header section together */
+        }
+        .header-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            color: #222;
+        }
+        .header-section p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+            page-break-inside: avoid;
+        }
+        .contact-info span {
+            display: flex;
+            align-items: center;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        .contact-info i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+
+        .social-links-resume {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+            page-break-inside: avoid;
+        }
+        .social-links-resume a {
+            color: #555;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+        .social-links-resume a:hover {
+            color: var(--primary-color);
+        }
+        .social-links-resume a i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+
+        .profile-image-resume {
+            width: 120px;
+            height: 120px;
+            border-radius: 15px; /* Square with rounded corners */
+            object-fit: cover;
+            margin: 0 auto 15px auto; /* Centered block */
+            border: 3px solid var(--primary-color);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .section-content {
+            margin-bottom: 20px;
+            page-break-inside: avoid; /* Hint to avoid breaking inside this entire section content block */
+        }
+        .section-content h3 {
+            margin-top: 15px;
+        }
+        .section-content .meta {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 5px;
+            display: block; /* Ensures it takes full width */
+        }
+        .section-content p.description {
+            font-size: 0.95rem;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        .section-content ul.skills-list-resume {
+            list-style: none;
+            /* padding: 0; */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .section-content ul.skills-list-resume li {
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--primary-color);
+        }
+        .pdf-option-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .pdf-option-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 0;
+        }
+        .pdf-option-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+        .warning-text {
+            font-size: 0.85rem;
+            color: #dc3545;
+            margin-top: -8px;
+            margin-bottom: 10px;
+        }
+
+        /* Builder Header */
+        .builder-header {
+            width: 100%;
+            max-width: 1400px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 1px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+            position:sticky;
+            top:0;
+            z-index:9999;
+        }
+        .builder-header h1 {
+            color: white;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        .builder-header button {
+            margin-top: 0;
+        }
+        .color-font-options {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping */
+            padding: 10px;
+            
+        }
+        .color-font-options select {
+            width: auto;
+            min-width: 120px;
+            margin-top: 0;
+            /* padding: 4px;
+            */
+            background-color: var(--card-bg);
+            
+            
+            
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column; /* Stack panels vertically */
+                align-items: center;
+            }
+            .builder-panel, .resume-preview-container {
+                min-width: unset; /* Remove min-width on small screens */
+                width: 90%; /* Take full width */
+                max-width: 700px; /* Max width for readability on medium screens */
+                margin:auto;
+            }
+            .resume-preview-container {
+                position: static; /* Unstick on mobile to allow scrolling with content */
+                max-height: none;
+            }
+            .builder-panel {
+                max-height: unset; /* No max height, let it scroll naturally */
+            }
+            .builder-header {
+                justify-content: center;
+                text-align: center;
+            }
+            .builder-header h1 {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .color-font-options {
+                justify-content: center;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                /* padding: 10px; */
+            }
+            .builder-panel, .resume-preview-container {
+                padding: 15px;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            input[type="text"], input[type="email"], input[type="tel"], input[type="url"], textarea, select {
+                padding: 8px;
+                font-size: 0.95rem;
+            }
+            button {
+                padding: 8px 15px;
+                font-size: 0.95rem;
+            }
+            #resume-output {
+                padding: 20px;
+            }
+            .header-section h1 {
+                font-size: 2rem;
+            }
+            .header-section p {
+                font-size: 1rem;
+            }
+            .contact-info, .social-links-resume {
+                flex-direction: column;
+                align-items: center;
+                gap: 5px;
+            }
+            .contact-info span, .social-links-resume a {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Print Specific Styles */
+        @media print {
+            body {
+                background: none;
+                margin: 0;
+                padding: 0;
+                display: block; /* Override flex for print */
+            }
+            .container {
+                display: block; /* Override flex for print */
+                width: auto;
+                max-width: none;
+                margin: 0;
+            }
+            .builder-panel {
+                display: none; /* Hide builder panel when printing */
+            }
+            .resume-preview-container {
+                position: static; /* Unstick for print */
+                max-height: none;
+                overflow-y: visible;
+                box-shadow: none;
+                border-radius: 0;
+                width: 100%;
+                padding: 0;
+            }
+            #resume-output {
+                width: 210mm; /* A4 width */
+                height: auto; /* Allow content to dictate height */
+                min-height: 297mm; /* Ensure at least one full page */
+                padding: 20mm; /* A4 standard margins */
+                margin: 0;
+                box-shadow: none;
+                page-break-after: always; /* Ensure each resume starts on new page if multiple */
+            }
+            /* Adjust font sizes for print if necessary */
+            #resume-output h1 { font-size: 2rem; }
+            #resume-output h2 { font-size: 1.3rem; }
+            #resume-output h3 { font-size: 1rem; }
+            #resume-output p, #resume-output li, .contact-info span, .social-links-resume a {
+                font-size: 0.9rem;
+            }
+            .profile-image-resume {
+                width: 100px; /* Adjust size for print */
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="builder-header">
+        <h1>Mohid's Resume Builder</h1>
+        <div class="color-font-options">
+            <select id="colorThemeSelect" aria-label="Select Color Theme">
+                <option value="mohid">Mohid (Blue)</option>
+                <option value="green">Green Theme</option>
+                <option value="purple">Purple Theme</option>
+            </select>
+            <select id="fontFamilySelect" aria-label="Select Font Family">
+                <option value="default">Default (Roboto/Poppins)</option>
+                <option value="modern">Modern (Montserrat/Open Sans)</option>
+                <option value="classic">Classic (Merriweather/Lato)</option>
+            </select>
+            <button id="downloadPdfBtn">Download PDF <i class="fas fa-file-pdf"></i></button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="builder-panel">
+            <h2>Personal Information</h2>
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" placeholder="Mohid Ahmed">
+            </div>
+            <div class="form-group">
+                <label for="headline">Headline/Tagline:</label>
+                <input type="text" id="headline" placeholder="A Developer, Seller, Marketer & Creative Problem-Solver">
+            </div>
+            <div class="form-group">
+                <label for="summary">Summary:</label>
+                <textarea id="summary" placeholder="Hello there! I'm Mohid, a web developer..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="profileImage">Profile Image URL:</label>
+                <input type="url" id="profileImage" placeholder="https://i-am-mohid.netlify.app/logo.png">
+                <small><strong>Important:</strong> Use a direct image URL (e.g., `.png`, `.jpg`). For images not hosted on the same domain as this builder, you *must* run this file from a local web server (like `http://localhost:8000`) or deploy it online (e.g., Netlify) to avoid CORS issues when fetching the image for PDF generation. Local file paths (e.g., `file:///`) will not work.</small>
+            </div>
+
+            <h2>Contact Information</h2>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" placeholder="+1234567890">
+            </div>
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <input type="text" id="location" placeholder="City, Country">
+            </div>
+            <div class="form-group">
+                <label for="portfolioUrl">Portfolio URL:</label>
+                <input type="url" id="portfolioUrl" placeholder="https://i-am-mohid.netlify.app/">
+            </div>
+
+            <h2>Social Links</h2>
+            <div id="socialLinksContainer">
+                <div class="section-item social-item">
+                    <div class="form-group">
+                        <label>Platform (e.g., LinkedIn, GitHub):</label>
+                        <input type="text" class="social-platform" placeholder="GitHub">
+                    </div>
+                    <div class="form-group">
+                        <label>URL:</label>
+                        <input type="url" class="social-url" placeholder="https://github.com/Mohid-Master/">
+                    </div>
+                    <button type="button" class="remove-section-btn">Remove</button>
+                </div>
+            </div>
+            <button type="button" class="add-section-btn" data-section="social">Add Social Link</button>
+
+            <h2>Skills (Comma Separated)</h2>
+            <div class="form-group">
+                <textarea id="skills" placeholder="HTML5, CSS3, JavaScript, React.js (Learning), Problem Solving, UI/UX Principles"></textarea>
+            </div>
+
+            <h2>Experience</h2>
+            <div id="experienceContainer">
+                <div class="section-item experience-item">
+                    <div class="form-group">
+                        <label>Job Title:</label>
+                        <input type="text" class="exp-title" placeholder="Web Developer">
+                    </div>
+                    <div class="form-group">
+                        <label>Company:</label>
+                        <input type="text" class="exp-company" placeholder="Freelance / Self-Employed">
+                    </div>
+                    <div class="form-group">
+                        <label>Dates:</label>
+                        <input type="text" class="exp-dates" placeholder="Jan 2020 - Present">
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea class="exp-description" placeholder="Developed and maintained responsive web applications..."></textarea>
+                    </div>
+                    <button type="button" class="remove-section-btn">Remove</button>
+                </div>
+            </div>
+            <button type="button" class="add-section-btn" data-section="experience">Add Experience</button>
+
+            <h2>Education</h2>
+            <div id="educationContainer">
+                <div class="section-item education-item">
+                    <div class="form-group">
+                        <label>Degree/Field:</label>
+                        <input type="text" class="edu-degree" placeholder="Bachelor of Science in Computer Science">
+                    </div>
+                    <div class="form-group">
+                        <label>Institution:</label>
+                        <input type="text" class="edu-institution" placeholder="University of XYZ">
+                    </div>
+                    <div class="form-group">
+                        <label>Dates:</label>
+                        <input type="text" class="edu-dates" placeholder="Sep 2018 - May 2022">
+                    </div>
+                    <div class="form-group">
+                        <label>Notes (optional):</label>
+                        <textarea class="edu-notes" placeholder="Relevant coursework, honors..."></textarea>
+                    </div>
+                    <button type="button" class="remove-section-btn">Remove</button>
+                </div>
+            </div>
+            <button type="button" class="add-section-btn" data-section="education">Add Education</button>
+
+            <h2>Projects</h2>
+            <div id="projectsContainer">
+                <div class="section-item project-item">
+                    <div class="form-group">
+                        <label>Project Name:</label>
+                        <input type="text" class="proj-name" placeholder="MDS QuicklyYours">
+                    </div>
+                    <div class="form-group">
+                        <label>Project Link (Optional):</label>
+                        <input type="url" class="proj-link" placeholder="https://mds-quicklyyour.netlify.app/">
+                    </div>
+                    <div class="form-group">
+                        <label>Technologies Used (Comma Separated):</label>
+                        <input type="text" class="proj-tech" placeholder="HTML, CSS, JavaScript">
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea class="proj-description" placeholder="A dynamic e-commerce or service platform concept..."></textarea>
+                    </div>
+                    <button type="button" class="remove-section-btn">Remove</button>
+                </div>
+            </div>
+            <button type="button" class="add-section-btn" data-section="projects">Add Project</button>
+
+            <div class="pdf-option-group">
+                <input type="checkbox" id="fitToOnePage">
+                <label for="fitToOnePage">Attempt to fit on one page</label>
+            </div>
+            <p class="warning-text" id="onePageWarning" style="display:none;">Warning: This may reduce font size and readability if content is extensive.</p>
+
+
+        </div>
+
+        <div class="resume-preview-container">
+            <div id="resume-output">
+                <!-- Resume content will be dynamically inserted here -->
+                <div class="header-section">
+                    <!-- Default Base64 Placeholder Image -->
+                    <img id="previewImage" class="profile-image-resume" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNlMGYyZmUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9ImFyaWFsIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMDA3YmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj5QaG90bzwvdGV4dD48L3N2Zz4=" alt="Profile Photo">
+                    <h1 id="previewFullName">Your Full Name</h1>
+                    <p id="previewHeadline" class="headline">Your Professional Headline/Tagline</p>
+                    <div class="contact-info">
+                        <span id="previewEmail"><i class="fas fa-envelope"></i> you@example.com</span>
+                        <span id="previewPhone"><i class="fas fa-phone"></i> +1234567890</span>
+                        <span id="previewLocation"><i class="fas fa-map-marker-alt"></i> City, Country</span>
+                        <span id="previewPortfolio"><i class="fas fa-globe"></i> <a href="#" target="_blank" rel="noopener noreferrer">Portfolio</a></span>
+                    </div>
+                    <div id="previewSocialLinks" class="social-links-resume">
+                        <!-- Social links will be dynamically added -->
+                    </div>
+                </div>
+
+                <h2>Summary</h2>
+                <div id="previewSummary" class="section-content">
+                    <p>A concise overview of your professional background, skills, and career goals. Tailor this to each job application.</p>
+                </div>
+
+                <h2>Skills</h2>
+                <div id="previewSkills" class="section-content">
+                    <ul class="skills-list-resume">
+                        <li>HTML5</li>
+                        <li>CSS3</li>
+                        <li>JavaScript</li>
+                        <li>Problem Solving</li>
+                    </ul>
+                </div>
+
+                <h2>Experience</h2>
+                <div id="previewExperience" class="section-content">
+                    <!-- Experience items will be dynamically added -->
+                </div>
+
+                <h2>Education</h2>
+                <div id="previewEducation" class="section-content">
+                    <!-- Education items will be dynamically added -->
+                </div>
+
+                <h2>Projects</h2>
+                <div id="previewProjects" class="section-content">
+                    <!-- Project items will be dynamically added -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const formInputs = document.querySelectorAll('.builder-panel input, .builder-panel textarea');
+            const resumeOutput = document.getElementById('resume-output');
+            const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+            const builderPanel = document.querySelector('.builder-panel');
+            const profileImageInput = document.getElementById('profileImage');
+            const previewImage = document.getElementById('previewImage');
+            const colorThemeSelect = document.getElementById('colorThemeSelect');
+            const fontFamilySelect = document.getElementById('fontFamilySelect');
+            const root = document.documentElement; // For CSS variables
+            const fontLinks = {
+                default: {
+                    main: 'Roboto',
+                    heading: 'Poppins',
+                    url: 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;600&display=swap'
+                },
+                modern: {
+                    main: 'Open Sans',
+                    heading: 'Montserrat',
+                    url: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap'
+                },
+                classic: {
+                    main: 'Lato',
+                    heading: 'Merriweather',
+                    url: 'https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@400;700&display=swap'
+                }
+            };
+            const fitToOnePageCheckbox = document.getElementById('fitToOnePage');
+            const onePageWarning = document.getElementById('onePageWarning');
+
+            // Default Base64 placeholder SVG image for robustness
+            const defaultBase64Placeholder = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNlMGYyZmUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9ImFyaWFsIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMDA3YmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj5QaG90bzwvdGV4dD48L3N2Zz4=';
+
+
+            const sectionTemplates = {
+                social: `
+                    <div class="section-item social-item">
+                        <div class="form-group">
+                            <label>Platform (e.g., LinkedIn, GitHub):</label>
+                            <input type="text" class="social-platform" placeholder="GitHub">
+                        </div>
+                        <div class="form-group">
+                            <label>URL:</label>
+                            <input type="url" class="social-url" placeholder="https://github.com/Mohid-Master/">
+                        </div>
+                        <button type="button" class="remove-section-btn">Remove</button>
+                    </div>
+                `,
+                experience: `
+                    <div class="section-item experience-item">
+                        <div class="form-group">
+                            <label>Job Title:</label>
+                            <input type="text" class="exp-title" placeholder="Web Developer">
+                        </div>
+                        <div class="form-group">
+                            <label>Company:</label>
+                            <input type="text" class="exp-company" placeholder="Freelance / Self-Employed">
+                        </div>
+                        <div class="form-group">
+                            <label>Dates:</label>
+                            <input type="text" class="exp-dates" placeholder="Jan 2020 - Present">
+                        </div>
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <textarea class="exp-description" placeholder="Developed and maintained responsive web applications..."></textarea>
+                        </div>
+                        <button type="button" class="remove-section-btn">Remove</button>
+                    </div>
+                `,
+                education: `
+                    <div class="section-item education-item">
+                        <div class="form-group">
+                            <label>Degree/Field:</label>
+                            <input type="text" class="edu-degree" placeholder="Bachelor of Science in Computer Science">
+                        </div>
+                        <div class="form-group">
+                            <label>Institution:</label>
+                            <input type="text" class="edu-institution" placeholder="University of XYZ">
+                        </div>
+                        <div class="form-group">
+                            <label>Dates:</label>
+                            <input type="text" class="edu-dates" placeholder="Sep 2018 - May 2022">
+                        </div>
+                        <div class="form-group">
+                            <label>Notes (optional):</label>
+                            <textarea class="edu-notes" placeholder="Relevant coursework, honors..."></textarea>
+                        </div>
+                        <button type="button" class="remove-section-btn">Remove</button>
+                    </div>
+                `,
+                projects: `
+                    <div class="section-item project-item">
+                        <div class="form-group">
+                            <label>Project Name:</label>
+                            <input type="text" class="proj-name" placeholder="MDS QuicklyYours">
+                        </div>
+                        <div class="form-group">
+                            <label>Project Link (Optional):</label>
+                            <input type="url" class="proj-link" placeholder="https://mds-quicklyyour.netlify.app/">
+                        </div>
+                        <div class="form-group">
+                            <label>Technologies Used (Comma Separated):</label>
+                            <input type="text" class="proj-tech" placeholder="HTML, CSS, JavaScript">
+                        </div>
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <textarea class="proj-description" placeholder="A dynamic e-commerce or service platform concept..."></textarea>
+                        </div>
+                        <button type="button" class="remove-section-btn">Remove</button>
+                    </div>
+                `
+            };
+
+            // --- Image to Base64 Conversion for PDF ---
+            // This function fetches an image URL and converts its data into a Base64 string.
+            // This is crucial for embedding external images into the PDF without CORS issues,
+            // as html2canvas can directly use Base64 image data.
+            const getImageBase64 = (url) => {
+                // If no URL or it's a local file path (which fetch can't handle due to security),
+                // resolve with null so the default placeholder can be used.
+                if (!url || !url.startsWith('http')) {
+                    console.warn("Skipping Base64 conversion for non-HTTP(s) URL or empty URL.");
+                    return Promise.resolve(null);
+                }
+                return fetch(url, { mode: 'cors' }) // Try CORS mode
+                    .then(response => {
+                        if (!response.ok) {
+                            console.warn(`Failed to fetch image from ${url}, status: ${response.status}. This might be a CORS issue on the image server.`);
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        return new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onloadend = () => resolve(reader.result);
+                            reader.onerror = reject;
+                            reader.readAsDataURL(blob);
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error converting image to Base64:", error);
+                        return null; // Return null on error so fallback can be used
+                    });
+            };
+
+            const updateResume = async () => { // Made async to handle image conversion
+                // Personal Info
+                document.getElementById('previewFullName').textContent = document.getElementById('fullName').value || 'Your Full Name';
+                document.getElementById('previewHeadline').textContent = document.getElementById('headline').value || 'Your Professional Headline/Tagline';
+                document.getElementById('previewSummary').querySelector('p').textContent = document.getElementById('summary').value || 'A concise overview of your professional background, skills, and career goals. Tailor this to each job application.';
+                
+                // Profile Image - handle base64 conversion
+                const imageUrl = profileImageInput.value;
+                if (imageUrl) {
+                    const base64Image = await getImageBase64(imageUrl);
+                    if (base64Image) {
+                        previewImage.src = base64Image;
+                    } else {
+                        // Fallback to default placeholder if conversion fails or URL is invalid
+                        previewImage.src = defaultBase64Placeholder;
+                        console.warn("Using default placeholder for profile image due to fetch failure or invalid URL.");
+                    }
+                } else {
+                    previewImage.src = defaultBase64Placeholder; // Use default if no URL provided
+                }
+                previewImage.style.display = 'block'; // Always display the image container
+
+                // Contact Info
+                document.getElementById('previewEmail').innerHTML = `<i class="fas fa-envelope"></i> ${document.getElementById('email').value || 'you@example.com'}`;
+                document.getElementById('previewPhone').innerHTML = `<i class="fas fa-phone"></i> ${document.getElementById('phone').value || '+1234567890'}`;
+                document.getElementById('previewLocation').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${document.getElementById('location').value || 'City, Country'}`;
+                const portfolioUrl = document.getElementById('portfolioUrl').value;
+                document.getElementById('previewPortfolio').innerHTML = portfolioUrl ? `<i class="fas fa-globe"></i> <a href="${portfolioUrl}" target="_blank" rel="noopener noreferrer">${portfolioUrl.replace(/(^\w+:|^)\/\//, '').split('/')[0]}</a>` : `<i class="fas fa-globe"></i> <a href="#" target="_blank" rel="noopener noreferrer">Portfolio</a>`;
+                document.getElementById('previewPortfolio').style.display = portfolioUrl ? 'flex' : 'none';
+
+                // Social Links
+                const socialLinksDiv = document.getElementById('previewSocialLinks');
+                socialLinksDiv.innerHTML = '';
+                document.querySelectorAll('.social-item').forEach(item => {
+                    const platform = item.querySelector('.social-platform').value;
+                    const url = item.querySelector('.social-url').value;
+                    if (platform && url) {
+                        const iconClass = getSocialIconClass(platform);
+                        socialLinksDiv.innerHTML += `
+                            <a href="${url}" target="_blank" rel="noopener noreferrer">
+                                <i class="${iconClass}"></i> ${platform}
+                            </a>
+                        `;
+                    }
+                });
+                socialLinksDiv.style.display = socialLinksDiv.children.length > 0 ? 'flex' : 'none';
+
+
+                // Skills
+                const skillsText = document.getElementById('skills').value;
+                const skillsList = document.getElementById('previewSkills').querySelector('ul');
+                skillsList.innerHTML = '';
+                if (skillsText) {
+                    skillsText.split(',').forEach(skill => {
+                        const trimmedSkill = skill.trim();
+                        if (trimmedSkill) {
+                            skillsList.innerHTML += `<li>${trimmedSkill}</li>`;
+                        }
+                    });
+                } else {
+                    skillsList.innerHTML = '<li>No skills added yet.</li>';
+                }
+
+                // Experience
+                const previewExperienceDiv = document.getElementById('previewExperience');
+                previewExperienceDiv.innerHTML = '';
+                document.querySelectorAll('.experience-item').forEach(item => {
+                    const title = item.querySelector('.exp-title').value;
+                    const company = item.querySelector('.exp-company').value;
+                    const dates = item.querySelector('.exp-dates').value;
+                    const description = item.querySelector('.exp-description').value;
+                    if (title && company && dates) {
+                        previewExperienceDiv.innerHTML += `
+                            <h3>${title} at ${company}</h3>
+                            <span class="meta">${dates}</span>
+                            <p class="description">${description}</p>
+                        `;
+                    }
+                });
+
+                // Education
+                const previewEducationDiv = document.getElementById('previewEducation');
+                previewEducationDiv.innerHTML = '';
+                document.querySelectorAll('.education-item').forEach(item => {
+                    const degree = item.querySelector('.edu-degree').value;
+                    const institution = item.querySelector('.edu-institution').value;
+                    const dates = item.querySelector('.edu-dates').value;
+                    const notes = item.querySelector('.edu-notes').value;
+                    if (degree && institution && dates) {
+                        previewEducationDiv.innerHTML += `
+                            <h3>${degree}</h3>
+                            <p>${institution}, ${dates}</p>
+                            ${notes ? `<p>${notes}</p>` : ''}
+                        `;
+                    }
+                });
+
+                // Projects
+                const previewProjectsDiv = document.getElementById('previewProjects');
+                previewProjectsDiv.innerHTML = '';
+                document.querySelectorAll('.project-item').forEach(item => {
+                    const name = item.querySelector('.proj-name').value;
+                    const link = item.querySelector('.proj-link').value;
+                    const tech = item.querySelector('.proj-tech').value;
+                    const description = item.querySelector('.proj-description').value;
+
+                    if (name && description) {
+                        previewProjectsDiv.innerHTML += `
+                            <h3>${name} ${link ? `<a href="${link}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt" style="font-size:0.8em; margin-left:5px;"></i></a>` : ''}</h3>
+                            ${tech ? `<p class="meta">Technologies: ${tech}</p>` : ''}
+                            <p class="description">${description}</p>
+                        `;
+                    }
+                });
+
+                saveData(); // Save data to localStorage on every update
+            };
+
+            // Helper to get social icon class
+            const getSocialIconClass = (platform) => {
+                platform = platform.toLowerCase();
+                if (platform.includes('linkedin')) return 'fab fa-linkedin';
+                if (platform.includes('github')) return 'fab fa-github';
+                if (platform.includes('twitter')) return 'fab fa-twitter';
+                if (platform.includes('facebook')) return 'fab fa-facebook';
+                if (platform.includes('instagram')) return 'fab fa-instagram';
+                if (platform.includes('youtube')) return 'fab fa-youtube';
+                if (platform.includes('portfolio') || platform.includes('website')) return 'fas fa-globe';
+                // Add more as needed
+                return 'fas fa-link'; // Default icon
+            };
+
+
+            // Event Listeners for form input changes
+            formInputs.forEach(input => {
+                input.addEventListener('input', updateResume);
+            });
+
+            // Add/Remove Section Logic
+            builderPanel.addEventListener('click', (event) => {
+                if (event.target.classList.contains('add-section-btn')) {
+                    const sectionType = event.target.dataset.section;
+                    const containerId = `${sectionType}Container`;
+                    const container = document.getElementById(containerId);
+                    if (container && sectionTemplates[sectionType]) {
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = sectionTemplates[sectionType].trim();
+                        const newSection = tempDiv.firstChild;
+                        container.appendChild(newSection);
+                        // Re-attach event listeners for new inputs
+                        newSection.querySelectorAll('input, textarea').forEach(input => {
+                            input.addEventListener('input', updateResume);
+                        });
+                        updateResume(); // Update preview after adding
+                    }
+                } else if (event.target.classList.contains('remove-section-btn')) {
+                    const sectionItem = event.target.closest('.section-item');
+                    if (sectionItem) {
+                        sectionItem.remove();
+                        updateResume(); // Update preview after removing
+                    }
+                }
+            });
+
+            // Local Storage Functions
+            const saveData = () => {
+                const data = {};
+                formInputs.forEach(input => {
+                    data[input.id] = input.value;
+                });
+
+                // Save theme/font selections
+                data.colorTheme = colorThemeSelect.value;
+                data.fontFamily = fontFamilySelect.value;
+                data.fitToOnePage = fitToOnePageCheckbox.checked;
+
+
+                // Collect dynamic sections
+                data.socialLinks = [];
+                document.querySelectorAll('.social-item').forEach(item => {
+                    data.socialLinks.push({
+                        platform: item.querySelector('.social-platform').value,
+                        url: item.querySelector('.social-url').value
+                    });
+                });
+
+                data.experience = [];
+                document.querySelectorAll('.experience-item').forEach(item => {
+                    data.experience.push({
+                        title: item.querySelector('.exp-title').value,
+                        company: item.querySelector('.exp-company').value,
+                        dates: item.querySelector('.exp-dates').value,
+                        description: item.querySelector('.exp-description').value
+                    });
+                });
+
+                data.education = [];
+                document.querySelectorAll('.education-item').forEach(item => {
+                    data.education.push({
+                        degree: item.querySelector('.edu-degree').value,
+                        institution: item.querySelector('.edu-institution').value,
+                        dates: item.querySelector('.edu-dates').value,
+                        notes: item.querySelector('.edu-notes').value
+                    });
+                });
+
+                data.projects = [];
+                document.querySelectorAll('.project-item').forEach(item => {
+                    data.projects.push({
+                        name: item.querySelector('.proj-name').value,
+                        link: item.querySelector('.proj-link').value,
+                        tech: item.querySelector('.proj-tech').value,
+                        description: item.querySelector('.proj-description').value
+                    });
+                });
+
+                localStorage.setItem('mohidResumeData', JSON.stringify(data));
+            };
+
+            const loadData = () => {
+                const savedData = localStorage.getItem('mohidResumeData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    for (const id in data) {
+                        const input = document.getElementById(id);
+                        if (input) {
+                            input.value = data[id];
+                        }
+                    }
+
+                    // Load theme/font selections
+                    if (data.colorTheme) {
+                        colorThemeSelect.value = data.colorTheme;
+                        applyColorTheme(data.colorTheme, false); // Pass false to avoid re-saving immediately
+                    }
+                    if (data.fontFamily) {
+                        fontFamilySelect.value = data.fontFamily;
+                        applyFontFamily(data.fontFamily, false); // Pass false to avoid re-saving immediately
+                    }
+                    if (data.fitToOnePage !== undefined) {
+                        fitToOnePageCheckbox.checked = data.fitToOnePage;
+                        onePageWarning.style.display = data.fitToOnePage ? 'block' : 'none';
+                    }
+
+                    // Load dynamic sections
+                    const loadDynamicSections = (containerId, itemsData, templateHtml, inputSelectors) => {
+                        const container = document.getElementById(containerId);
+                        // Make sure to clear existing children, but keep one default item if no data
+                        if (container) {
+                            container.innerHTML = ''; // Clear all children first
+                            if (itemsData && itemsData.length > 0) {
+                                itemsData.forEach(itemData => {
+                                    const tempDiv = document.createElement('div');
+                                    tempDiv.innerHTML = templateHtml.trim();
+                                    const newItem = tempDiv.firstChild;
+
+                                    inputSelectors.forEach(selector => {
+                                        const input = newItem.querySelector(selector.query);
+                                        if (input) input.value = itemData[selector.key] || '';
+                                    });
+
+                                    container.appendChild(newItem);
+                                    newItem.querySelectorAll('input, textarea').forEach(input => {
+                                        input.addEventListener('input', updateResume);
+                                    });
+                                });
+                            } else {
+                                // Add one empty item if no saved data for the section
+                                const tempDiv = document.createElement('div');
+                                tempDiv.innerHTML = templateHtml.trim();
+                                container.appendChild(tempDiv.firstChild);
+                                container.querySelectorAll('input, textarea').forEach(input => {
+                                    input.addEventListener('input', updateResume);
+                                });
+                            }
+                        }
+                    };
+
+                    loadDynamicSections('socialLinksContainer', data.socialLinks, sectionTemplates.social, [
+                        { query: '.social-platform', key: 'platform' },
+                        { query: '.social-url', key: 'url' }
+                    ]);
+                    loadDynamicSections('experienceContainer', data.experience, sectionTemplates.experience, [
+                        { query: '.exp-title', key: 'title' },
+                        { query: '.exp-company', key: 'company' },
+                        { query: '.exp-dates', key: 'dates' },
+                        { query: '.exp-description', key: 'description' }
+                    ]);
+                    loadDynamicSections('educationContainer', data.education, sectionTemplates.education, [
+                        { query: '.edu-degree', key: 'degree' },
+                        { query: '.edu-institution', key: 'institution' },
+                        { query: '.edu-dates', key: 'dates' },
+                        { query: '.edu-notes', key: 'notes' }
+                    ]);
+                    loadDynamicSections('projectsContainer', data.projects, sectionTemplates.projects, [
+                        { query: '.proj-name', key: 'name' },
+                        { query: '.proj-link', key: 'link' },
+                        { query: '.proj-tech', key: 'tech' },
+                        { query: '.proj-description', key: 'description' }
+                    ]);
+                } else {
+                    // If no saved data at all, ensure at least one default item for each section exists
+                    loadDynamicSections('socialLinksContainer', [], sectionTemplates.social, []);
+                    loadDynamicSections('experienceContainer', [], sectionTemplates.experience, []);
+                    loadDynamicSections('educationContainer', [], sectionTemplates.education, []);
+                    loadDynamicSections('projectsContainer', [], sectionTemplates.projects, []);
+                }
+                updateResume(); // Initial update after loading data
+            };
+
+            // Color Theme Application
+            const applyColorTheme = (theme, save = true) => {
+                switch (theme) {
+                    case 'mohid':
+                        root.style.setProperty('--primary-color', '#007bff');
+                        root.style.setProperty('--accent-color', '#ffc107');
+                        root.style.setProperty('--light-bg', '#f8f9fa');
+                        root.style.setProperty('--card-bg', '#fff');
+                        root.style.setProperty('--text-color', '#333');
+                        break;
+                    case 'green':
+                        root.style.setProperty('--primary-color', '#28a745');
+                        root.style.setProperty('--accent-color', '#ffdb00');
+                        root.style.setProperty('--light-bg', '#e6ffe6');
+                        root.style.setProperty('--card-bg', '#fff');
+                        root.style.setProperty('--text-color', '#333');
+                        break;
+                    case 'purple':
+                        root.style.setProperty('--primary-color', '#6f42c1');
+                        root.style.setProperty('--accent-color', '#ff7f50');
+                        root.style.setProperty('--light-bg', '#f0e6ff');
+                        root.style.setProperty('--card-bg', '#fff');
+                        root.style.setProperty('--text-color', '#333');
+                        break;
+                }
+                updateResume(); // Update preview to apply new colors
+                if (save) saveData();
+            };
+
+            colorThemeSelect.addEventListener('change', (e) => {
+                applyColorTheme(e.target.value);
+            });
+
+            // Font Family Application
+            const applyFontFamily = (fontTheme, save = true) => {
+                // Disable all font links
+                document.querySelectorAll('link[id^="fontLink"]').forEach(link => {
+                    link.disabled = true;
+                });
+
+                // Enable the selected font link and set CSS variables
+                const selectedFont = fontLinks[fontTheme];
+                if (selectedFont) {
+                    const linkElement = document.getElementById(`fontLink${fontTheme.charAt(0).toUpperCase() + fontTheme.slice(1)}`);
+                    if (linkElement) {
+                         linkElement.disabled = false;
+                    } else {
+                        // Dynamically create link if it doesn't exist (e.g. if loaded from saved data)
+                        const newLink = document.createElement('link');
+                        newLink.id = `fontLink${fontTheme.charAt(0).toUpperCase() + fontTheme.slice(1)}`;
+                        newLink.rel = 'stylesheet';
+                        newLink.href = selectedFont.url;
+                        document.head.appendChild(newLink);
+                    }
+                    root.style.setProperty('--font-main', `'${selectedFont.main}', sans-serif`);
+                    root.style.setProperty('--font-heading', `'${selectedFont.heading}', serif`); // Some heading fonts might be serif
+                }
+                updateResume(); // Update preview to apply new fonts
+                if (save) saveData();
+            };
+
+            fontFamilySelect.addEventListener('change', (e) => {
+                applyFontFamily(e.target.value);
+            });
+            
+            fitToOnePageCheckbox.addEventListener('change', () => {
+                onePageWarning.style.display = fitToOnePageCheckbox.checked ? 'block' : 'none';
+                saveData();
+            });
+
+            // PDF Download
+            downloadPdfBtn.addEventListener('click', async () => {
+                // Temporarily adjust some styles for PDF export if 'fit to one page' is checked
+                const originalRootFontSize = root.style.fontSize;
+                const originalResumePadding = resumeOutput.style.padding;
+                const originalResumeMinHeight = resumeOutput.style.minHeight;
+
+                if (fitToOnePageCheckbox.checked) {
+                    // Apply styles for compression
+                    root.style.fontSize = '12px'; // Smaller base font to aid compression
+                    resumeOutput.style.padding = '10mm'; // Tighter margins
+                    resumeOutput.style.minHeight = 'unset'; // Let content dictate height, for page break avoidance
+                }
+
+                const element = resumeOutput;
+                const opt = {
+                    margin:       fitToOnePageCheckbox.checked ? [10, 5, 10, 5] : [10, 10, 10, 10], // top, left, bottom, right in mm
+                    filename:     `${document.getElementById('fullName').value || 'Resume'}_MohidBuilder.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { 
+                        scale: 2, 
+                        useCORS: true, 
+                        logging: false,
+                        allowTaint: false, // Set to false since we're converting images to base64
+                        // For images that might still cause issues, a proxy could be used here:
+                        // proxy: 'YOUR_CORS_PROXY_URL_HERE' 
+                    },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    // 'avoid-all' mode tries best to prevent any element from breaking across pages.
+                    // 'css' mode respects CSS page-break properties. 'legacy' is older behavior.
+                    pagebreak:    { mode: fitToOnePageCheckbox.checked ? 'avoid-all' : ['css', 'legacy'] }
+                };
+                
+                await html2pdf().set(opt).from(element).save();
+
+                // Restore original styles after PDF generation
+                if (fitToOnePageCheckbox.checked) {
+                    root.style.fontSize = originalRootFontSize;
+                    resumeOutput.style.padding = originalResumePadding;
+                    resumeOutput.style.minHeight = originalResumeMinHeight;
+                }
+            });
+
+            // Initial load and update
+            loadData();
+        });
+    </script>
+</body>
+</html>
